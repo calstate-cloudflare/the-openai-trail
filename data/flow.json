@@ -1,0 +1,14 @@
+{
+  "initialScene": "main_menu",
+  "transitions": {
+    "role_selection.select": "team_naming",
+    "team_naming.submit": "start_timing",
+    "resource_allocation.finish": "launch_briefing",
+    "launch_briefing.continue": "quiz_intro",
+    "quiz_intro.select": "progress_status",
+    "cutscene_golden_bear.continue": "travel",
+    "cutscene_channel_islands.continue": "travel",
+    "cutscene_long_beach.continue": "travel",
+    "progress_status.continue": "travel"
+  }
+}

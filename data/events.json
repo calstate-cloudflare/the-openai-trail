@@ -1,0 +1,43 @@
+{
+  "events": [
+    {
+      "id": "budget_freeze",
+      "name": "Systemwide Budget Freeze",
+      "category": "finance",
+      "description": "State funding is temporarily frozen. You lose critical rollout dollars.",
+      "effects": {
+        "budget": -300,
+        "goodwill": -5
+      },
+      "conditions": {
+        "minCampus": 2
+      }
+    },
+    {
+      "id": "ferpa_audit",
+      "name": "Surprise FERPA Audit",
+      "category": "governance",
+      "description": "Privacy officers swarm your deployment. Delay progress but increase compliance confidence.",
+      "effects": {
+        "progress": -1,
+        "goodwill": 10
+      },
+      "conditions": {
+        "requiresStaff": ["privacy_officer"]
+      }
+    },
+    {
+      "id": "viral_success",
+      "name": "Viral ChatGPT Success Story",
+      "category": "morale",
+      "description": "A campus innovation goes viral on social media and boosts morale everywhere.",
+      "effects": {
+        "morale": 2,
+        "goodwill": 20
+      },
+      "conditions": {
+        "minEngagement": "filling"
+      }
+    }
+  ]
+}

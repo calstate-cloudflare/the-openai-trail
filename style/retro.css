@@ -1,0 +1,779 @@
+@font-face {
+  font-family: 'CodeGon';
+  src: url('../fonts/codegon.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CodeGon Mono';
+  src: url('../fonts/codegon-mono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --crt-green: #8fee96;
+  --crt-amber: #f9c97b;
+  --crt-white: #f4f8f8;
+  --crt-dim: #3c6658;
+  --crt-border: #1a2c26;
+  --crt-bg: #040d05;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #010503;
+  color: var(--crt-green);
+  font-family: 'CodeGon Mono', 'CodeGon', monospace;
+  letter-spacing: 0.04em;
+  min-height: 100vh;
+}
+
+#frame {
+  position: relative;
+  width: min(95vw, calc(95vh * 2454 / 1440));
+  aspect-ratio: 2454 / 1440;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --screen-scale: 1;
+}
+
+main {
+  width: 818px;
+  height: 480px;
+  background: rgba(0, 8, 4, 0.95);
+  border: 6px solid var(--crt-border);
+  box-shadow: 0 0 25px rgba(8, 255, 120, 0.25), inset 0 0 8px rgba(8, 255, 120, 0.35);
+  padding: 28px 40px;
+  position: absolute;
+  top: var(--screen-offset-y, 0px);
+  left: var(--screen-offset-x, 0px);
+  transform-origin: top left;
+  transform: scale(var(--screen-scale));
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: var(--screen-background, #040d06);
+}
+
+main::before,
+main::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 680px;
+  height: 40px;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+main::before {
+  top: 16px;
+  background-image: url('../img/flourish_top.png');
+}
+
+main::after {
+  bottom: 16px;
+  background-image: url('../img/flourish_bottom.png');
+}
+
+.crt-overlay {
+  position: absolute;
+  width: 818px;
+  height: 480px;
+  top: var(--screen-offset-y, 0px);
+  left: var(--screen-offset-x, 0px);
+  transform-origin: top left;
+  transform: scale(var(--screen-scale));
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0) 4px,
+      rgba(0, 0, 0, 0.08) 4px,
+      rgba(0, 0, 0, 0.08) 5px
+    ),
+    radial-gradient(circle at 10% 10%, rgba(143, 238, 150, 0.1) 0, rgba(143, 238, 150, 0) 60%);
+  opacity: 0.65;
+}
+
+.screen {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+  padding: 118px 72px 94px;
+}
+
+.screen[data-scene='main_menu'] {
+  padding: 126px 21px 58px 11px;
+  gap: 12px;
+}
+
+.screen[data-scene='role_selection'] {
+  padding: 11px 14px 14px 144px;
+  gap: 10px;
+}
+
+.screen[data-scene='team_naming'] {
+  padding: 224px 9px 11px 12px;
+  gap: 12px;
+  display: flex;
+  align-items: stretch;
+}
+
+.screen[data-scene='start_timing'] {
+  padding: 7px 9px 9px 212px;
+  gap: 10px;
+}
+
+.screen[data-scene='launch_briefing'] {
+  padding: 0;
+  gap: 0;
+}
+
+.screen[data-scene='resource_allocation'] {
+  padding: 0 6px 4px 142px;
+  margin-top: -5px;
+  gap: 8px;
+}
+
+.screen[data-scene='quiz_intro'] {
+  padding: 4px 20px 20px 20px;
+  gap: 10px;
+}
+
+.screen[data-scene='progress_status'] {
+  padding: 0;
+  gap: 0;
+}
+
+.screen[data-scene='resource_allocation'] .screen__title {
+  font-size: 20px;
+}
+
+.screen[data-scene='resource_allocation'] .screen__body {
+  font-size: 11px;
+  line-height: 1.15;
+  max-width: 520px;
+}
+
+.screen[data-scene='resource_allocation'] .screen__feedback {
+  font-size: 12px;
+  max-width: 520px;
+}
+
+.screen[data-scene='resource_allocation'] .menu {
+  gap: 4px;
+}
+
+.screen[data-scene='resource_allocation'] .menu__text-wrapper {
+  max-width: 500px;
+}
+
+.screen[data-scene='resource_allocation'] .menu__button {
+  min-width: 340px;
+  max-width: 500px;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 2px 12px;
+}
+
+.screen__title {
+  font-size: 22px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(143, 238, 150, 0.75);
+}
+
+.screen__subtitle {
+  font-size: 13px;
+  color: var(--crt-amber);
+}
+
+.screen__body {
+  font-size: 13px;
+  line-height: 1.25;
+  white-space: pre-wrap;
+}
+
+.screen[data-scene='team_naming'] .screen__title {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.screen[data-scene='team_naming'] .screen__body {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.screen[data-scene='role_selection'] .screen__body {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu__option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.menu__option-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu__index {
+  width: 26px;
+  color: var(--crt-amber);
+  text-align: right;
+  font-size: 13px;
+}
+
+.menu__text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 420px;
+}
+
+.screen[data-scene='main_menu'] .menu__text-wrapper {
+  max-width: 560px;
+}
+
+.screen[data-scene='role_selection'] .menu__text-wrapper {
+  max-width: 420px;
+}
+
+.screen[data-scene='quiz_intro'] .menu__text-wrapper {
+  max-width: 520px;
+}
+
+.screen[data-scene='role_selection'] .menu {
+  gap: 8px;
+}
+
+.screen[data-scene='role_selection'] .menu__option {
+  gap: 3px;
+}
+
+.screen[data-scene='team_naming'] .team-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+.screen[data-scene='team_naming'] .team-layout__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.screen[data-scene='team_naming'] .team-layout__form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+.screen[data-scene='team_naming'] .team-layout__members {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.screen[data-scene='team_naming'] .team-layout__members-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.screen[data-scene='team_naming'] .team-layout__members-row--pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 12px;
+  align-items: center;
+}
+
+.screen[data-scene='team_naming'] .form {
+  margin-top: 0;
+  gap: 6px;
+}
+
+.menu__button {
+  background: transparent;
+  border: 1px solid rgba(143, 238, 150, 0.25);
+  color: inherit;
+  font: inherit;
+  padding: 3px 16px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  min-width: 340px;
+  max-width: 420px;
+  text-align: left;
+  display: inline-block;
+}
+
+.screen[data-scene='main_menu'] .menu__button {
+  min-width: 560px;
+  max-width: 560px;
+}
+
+.screen[data-scene='role_selection'] .menu__button {
+  min-width: 420px;
+  max-width: 420px;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 2px 12px;
+}
+
+.screen[data-scene='quiz_intro'] .menu__button {
+  min-width: 520px;
+  max-width: 520px;
+}
+
+.menu__description {
+  color: var(--crt-white);
+  font-size: 12px;
+  margin-left: 0;
+}
+
+.screen[data-scene='main_menu'] .menu__description {
+  white-space: nowrap;
+}
+
+.screen[data-scene='role_selection'] .menu__description {
+  white-space: normal;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.screen[data-scene='team_naming'] .form__group {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.screen[data-scene='team_naming'] .team-layout__members-row--pair .form__group {
+  flex: 1 1 auto;
+}
+
+.screen[data-scene='team_naming'] .form__group--inline {
+  flex-direction: row;
+  max-width: none;
+}
+
+.screen[data-scene='team_naming'] .form__label {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  min-width: 210px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.screen[data-scene='team_naming'] .form__input {
+  padding: 4px 8px;
+  font-size: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.screen[data-scene='team_naming'] .form__submit {
+  padding: 6px 14px;
+  font-size: 12px;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.screen[data-scene='team_naming'] .team-layout__members-row--pair .form__label {
+  min-width: 140px;
+}
+
+.screen[data-scene='team_naming'] .form__error {
+  min-height: 16px;
+  font-size: 11px;
+  align-self: flex-start;
+}
+
+.screen[data-scene='team_naming'] .screen__prompt {
+  margin-top: auto;
+  font-size: 12px;
+}
+
+.cutscene__board {
+  position: absolute;
+  top: 384px;
+  left: 160px;
+  width: 500px;
+  height: 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  color: #0a0a0a;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.cutscene__subtitle {
+  position: absolute;
+  top: 406px;
+  left: 160px;
+  width: 500px;
+  height: 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  color: #0a0a0a;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.cutscene__prompt {
+  position: absolute;
+  left: 212px;
+  bottom: 46px;
+  color: var(--crt-white);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 8px rgba(143, 238, 150, 0.5);
+}
+
+.progress-scene__wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  border: 2px solid var(--crt-border);
+}
+
+.progress-scene__visual {
+  flex: 0 0 262px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  overflow: hidden;
+  border-bottom: 2px solid var(--crt-border);
+}
+
+.progress-scene__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.progress-scene__stats {
+  flex: 1;
+  background: #f5f5f5;
+  color: #0a0a0a;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: min-content;
+  padding: 16px 24px 24px;
+  gap: 12px 32px;
+  font-size: 15px;
+  font-family: 'CodeGon Mono', 'CodeGon', monospace;
+  border-bottom: 2px solid var(--crt-border);
+}
+
+.progress-scene__stat-row {
+  display: flex;
+  gap: 8px;
+}
+
+.progress-scene__stat-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  min-width: 140px;
+}
+
+.progress-scene__stat-value {
+  flex: 1;
+  letter-spacing: 0.05em;
+}
+
+.progress-scene__prompt {
+  background: #101010;
+  color: #f5f5f5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 14px;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.menu__note {
+  font-size: 11px;
+  color: var(--crt-amber);
+  margin-left: 0;
+}
+
+.menu__button:hover,
+.menu__button:focus-visible {
+  outline: none;
+  border-color: var(--crt-amber);
+  color: var(--crt-white);
+  box-shadow: 0 0 12px rgba(249, 201, 123, 0.45);
+}
+
+.menu__button--disabled,
+.menu__button:disabled {
+  border-color: rgba(60, 102, 88, 0.6);
+  color: rgba(244, 248, 248, 0.45);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Background placeholders per scene */
+
+#frame[data-background='main_menu'] {
+  --screen-background: url('../img/backgrounds/main_menu.png');
+}
+
+#frame[data-background='role_selection'] {
+  --screen-background: url('../img/backgrounds/role_selection.png');
+}
+
+#frame[data-background='team_naming'] {
+  --screen-background: url('../img/backgrounds/team_naming.png');
+}
+
+#frame[data-background='start_timing'] {
+  --screen-background: url('../img/backgrounds/start_timing.png');
+}
+
+#frame[data-background='resource_allocation'] {
+  --screen-background: url('../img/backgrounds/resource_allocation.png');
+}
+
+#frame[data-background='launch_briefing'] {
+  --screen-background: url('../img/backgrounds/chancellors-office.png');
+}
+
+#frame[data-background='cutscene_golden_bear'] {
+  --screen-background: url('../img/backgrounds/golden-bear.png');
+}
+
+#frame[data-background='cutscene_channel_islands'] {
+  --screen-background: url('../img/backgrounds/channel-islands.png');
+}
+
+#frame[data-background='cutscene_long_beach'] {
+  --screen-background: url('../img/backgrounds/longbeach.png');
+}
+
+#frame[data-background='progress_status'] {
+  --screen-background: #000000;
+}
+
+#frame[data-background='travel'] {
+  --screen-background: url('../img/backgrounds/travel.png');
+}
+
+#frame[data-background='change_pace'] {
+  --screen-background: url('../img/backgrounds/change_pace.png');
+}
+
+#frame[data-background='change_engagement'] {
+  --screen-background: url('../img/backgrounds/change_engagement.png');
+}
+
+#frame[data-background='about_csu'] {
+  --screen-background: url('../img/backgrounds/about_csu.png');
+}
+
+#frame[data-background='leaderboard'] {
+  --screen-background: url('../img/backgrounds/leaderboard.png');
+}
+
+#frame[data-background='victory'] {
+  --screen-background: url('../img/backgrounds/victory.png');
+}
+
+#frame[data-background='game_over'] {
+  --screen-background: url('../img/backgrounds/game_over.png');
+}
+
+#frame[data-background='scoring'] {
+  --screen-background: url('../img/backgrounds/scoring.png');
+}
+
+.screen__prompt {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 13px;
+  color: var(--crt-amber);
+  text-transform: uppercase;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form__group--inline {
+  max-width: 280px;
+}
+
+.form__group--column {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px 16px;
+}
+
+.form__label {
+  font-size: 16px;
+  color: var(--crt-amber);
+  text-transform: uppercase;
+}
+
+.form__input {
+  padding: 6px 10px;
+  background: rgba(0, 20, 12, 0.72);
+  border: 1px solid var(--crt-dim);
+  color: var(--crt-white);
+  font: inherit;
+}
+
+.form__input:focus {
+  outline: none;
+  border-color: var(--crt-amber);
+  box-shadow: 0 0 12px rgba(249, 201, 123, 0.45);
+}
+
+.form__submit {
+  align-self: flex-start;
+  padding: 8px 18px;
+  border: 1px solid var(--crt-amber);
+  background: transparent;
+  color: var(--crt-white);
+  font: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.form__submit:hover,
+.form__submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 16px rgba(249, 201, 123, 0.45);
+}
+
+.form__error,
+.screen__feedback {
+  font-size: 16px;
+  color: var(--crt-amber);
+}
+
+.status-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 12px 0 6px;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.status-board__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid rgba(143, 238, 150, 0.2);
+  padding-bottom: 4px;
+}
+
+.status-board__label {
+  color: var(--crt-amber);
+}
+
+.status-board__value {
+  color: var(--crt-white);
+}
+
+.event-log {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 16px;
+}
+
+.event-log__item {
+  padding: 6px 8px;
+  border-left: 3px solid var(--crt-dim);
+  background: rgba(0, 20, 12, 0.5);
+}
+
+.event-log__item--event {
+  border-color: var(--crt-amber);
+}
+
+.event-log__item--success {
+  border-color: var(--crt-green);
+}
+
+.ascii-divider {
+  font-size: 18px;
+  color: var(--crt-dim);
+}

@@ -1,0 +1,404 @@
+{
+  "meta": {
+    "title": "The OpenAI Trail",
+    "version": "0.1.0"
+  },
+  "main_menu": {
+    "title": "",
+    "divider": "",
+    "body": [
+      "You may:"
+    ],
+    "options": [
+      {
+        "id": "start_campaign",
+        "label": "Roll out ChatGPT",
+        "nextScene": "role_selection",
+        "description": "Launch the systemwide rollout now."
+      },
+      {
+        "id": "learn_csu",
+        "label": "Learn About the CSU",
+        "nextScene": "about_csu",
+        "description": "Hear the CSU lore and rollout context."
+      },
+      {
+        "id": "view_leaderboard",
+        "label": "View Rollout Leaderboard",
+        "description": "Peek at past rollout champions.",
+        "nextScene": "leaderboard"
+      }
+    ],
+    "prompt": "What is your choice?"
+  },
+  "role_selection": {
+    "title": "Choose Your Role",
+    "body": [
+      "Many people played a role in rolling out ChatGPT across the CSU. Pick which role you will take on."
+    ],
+    "options": [
+      {
+        "id": "cio",
+        "label": "Be a System-Wide CIO",
+        "description": "Sets CSU-wide strategy and answers to everyone."
+      },
+      {
+        "id": "engagement_partner",
+        "label": "Be a Campus Engagement Partner",
+        "description": "Knows every campus contact and keeps morale up."
+      },
+      {
+        "id": "chief_infra_admin",
+        "label": "Be a Chief Infrastructure & Administrative Officer",
+        "description": "Wear all of the hats."
+      },
+      {
+        "id": "strategist",
+        "label": "Be a Senior Technology Strategist",
+        "description": "Walking the wire of new technology adoption."
+      }
+    ],
+    "prompt": "Who will lead the rollout?"
+  },
+  "about_csu": {
+    "title": "Rolling Across the CSU",
+    "body": [
+      "You are coordinating a rollout that touches 23 diverse campuses, from Humboldt to San Diego.",
+      "Each location has unique faculty culture, infrastructure readiness, and appetite for AI experimentation.",
+      "To succeed you must keep morale high, satisfy governance reviews, and prove value through adoption metrics.",
+      "Prepare your team, set the right pace, and brace for the unexpected."
+    ],
+    "prompt": "Press ENTER to return to the main menu."
+  },
+  "leaderboard": {
+    "title": "System-wide Rollout Leaders",
+    "body": [
+      "The leaderboard tracks legendary AI Trailblazers who reached CSU Maritime with budget and goodwill to spare.",
+      "Finish the prototype to see your name etched alongside the greats."
+    ],
+    "prompt": "Press ENTER to return to the main menu."
+  },
+  "team_naming": {
+    "title": "Name Your Team",
+    "body": [
+      "What is the name of your rollout team?",
+      "Name your teammates (4 total)."
+    ],
+    "fields": {
+      "teamNameLabel": "Rollout team name",
+      "memberLabel": "Teammate",
+      "submitLabel": "Lock in the team"
+    },
+    "prompt": "Enter names and press Submit to continue."
+  },
+  "start_timing": {
+    "title": "Pick Your Rollout Date",
+    "body": [
+      "AI has suddenly become a critical technology. Leadership asks you to pick a rollout date."
+    ],
+    "options": [
+      {
+        "id": "launch_immediately",
+        "label": "Right now (January)",
+        "description": "The only choice the Chancellor\u2019s Office will approve.",
+        "month": 1,
+        "nextScene": "resource_allocation"
+      },
+      {
+        "id": "launch_summer",
+        "label": "Wait until summer",
+        "description": "Not an option.",
+        "locked": true
+      },
+      {
+        "id": "launch_fall",
+        "label": "Kick off in the fall",
+        "description": "No, Press release sent.",
+        "locked": true
+      },
+      {
+        "id": "launch_never",
+        "label": "Politely decline",
+        "description": "Hilarious, but No.",
+        "locked": true
+      }
+    ],
+    "prompt": "When will you begin the rollout?"
+  },
+  "resource_menu": {
+    "title": "Hire Your New Staff",
+    "body": [
+      "Before starting this large rollout, you should acquire dedicated staff."
+    ],
+    "options": [
+      {
+        "id": "faculty_innovation_fellow",
+        "label": "Faculty Innovation Fellow",
+        "benefit": "Boosts morale and adoption speed.",
+        "fteRequired": 1
+      },
+      {
+        "id": "systems_administrator",
+        "label": "Systems Administrator",
+        "benefit": "Keeps infrastructure steady and outages low.",
+        "fteRequired": 1
+      },
+      {
+        "id": "communications_lead",
+        "label": "Communications Lead",
+        "benefit": "Runs trainings and campus-wide messaging.",
+        "fteRequired": 1
+      }
+    ],
+    "finishOption": {
+      "label": "Continue with no new FTE",
+      "nextScene": "launch_briefing",
+      "description": "Roll out using the team you already have."
+    },
+    "prompt": "Which role would you like to secure?"
+  },
+  "core_loop": {
+    "title": "The OpenAI Trail \u2014 Status",
+    "statusLabels": [
+      "Weather",
+      "Morale",
+      "Budget",
+      "Pace",
+      "Engagement",
+      "Next milestone"
+    ],
+    "actions": [
+      {
+        "id": "continue_rollout",
+        "label": "Continue the rollout",
+        "description": "Advance to the next campus and face new events."
+      },
+      {
+        "id": "check_resources",
+        "label": "Check resources",
+        "description": "Review budget, goodwill, and staffing."
+      },
+      {
+        "id": "change_pace",
+        "label": "Change pace",
+        "description": "Adjust how aggressively you push deployments."
+      },
+      {
+        "id": "change_engagement",
+        "label": "Change engagement level",
+        "description": "Tune communications and support intensity."
+      },
+      {
+        "id": "rest",
+        "label": "Stop to rest (mental health day)",
+        "description": "Take a breather to restore morale."
+      },
+      {
+        "id": "conduct_training",
+        "label": "Conduct training or hackathon",
+        "description": "Invest time to boost adoption and goodwill."
+      },
+      {
+        "id": "stakeholder_outreach",
+        "label": "Talk to stakeholders",
+        "description": "Hold listening sessions to stabilize support."
+      },
+      {
+        "id": "request_funding",
+        "label": "Request emergency funding",
+        "description": "Beg the Chancellor\u2019s Office for more money."
+      }
+    ],
+    "prompt": "What is your choice?"
+  },
+  "change_pace": {
+    "title": "Adjust Rollout Pace",
+    "body": [
+      "Pace affects morale and how quickly you move between campuses."
+    ],
+    "options": [
+      {
+        "id": "steady",
+        "label": "Steady",
+        "description": "Balanced push that keeps morale intact."
+      },
+      {
+        "id": "strenuous",
+        "label": "Strenuous",
+        "description": "Move fast but risk fraying nerves."
+      },
+      {
+        "id": "grueling",
+        "label": "Grueling",
+        "description": "Burn the midnight oil\u2014at a steep morale cost."
+      }
+    ],
+    "prompt": "Select the new rollout pace."
+  },
+  "engagement_levels": {
+    "title": "Set Engagement Level",
+    "body": [
+      "Engagement determines adoption speed, goodwill, and burnout."
+    ],
+    "options": [
+      {
+        "id": "filling",
+        "label": "Filling",
+        "description": "Workshops, office hours, and full support."
+      },
+      {
+        "id": "meager",
+        "label": "Meager",
+        "description": "Emails, reminders, and cheat sheets."
+      },
+      {
+        "id": "bare-bones",
+        "label": "Bare-bones",
+        "description": "Hope, prayer, and a FAQ page."
+      }
+    ],
+    "prompt": "Choose how hands-on your engagement will be."
+  },
+  "governance_review": {
+    "title": "Systemwide Governance Review",
+    "body": [
+      "Complexity: HIGH",
+      "Risk of delay: MODERATE"
+    ],
+    "options": [
+      "Attempt to rush it through",
+      "Prepare full documentation",
+      "Wait for better timing",
+      "Hire external consultants"
+    ],
+    "prompt": "What is your choice?"
+  },
+  "end_conditions": {
+    "title": "End Conditions",
+    "conditions": [
+      {
+        "id": "reach_maritime",
+        "label": "Reach CSU Maritime",
+        "result": "\ud83c\udf89 Win (successful rollout)"
+      },
+      {
+        "id": "lose_staff",
+        "label": "Lose staff / burnout",
+        "result": "You ran out of implementation teams."
+      },
+      {
+        "id": "lose_goodwill",
+        "label": "Lose goodwill",
+        "result": "The rollout has lost support."
+      },
+      {
+        "id": "run_out_of_time",
+        "label": "Run out of time",
+        "result": "The academic year ended before you finished."
+      }
+    ],
+    "prompt": "Press ENTER to continue."
+  },
+  "scoring": {
+    "title": "Scoring Breakdown",
+    "body": [
+      "Surviving team members: +500 pts each",
+      "Campuses deployed: +50 pts each",
+      "Remaining goodwill: +1 pt / 25 units",
+      "Remaining budget: +1 pt / $5",
+      "Bonus multiplier based on role (\u00d71\u2013\u00d73)"
+    ],
+    "prompt": "Press ENTER to continue."
+  },
+  "victory": {
+    "title": "CSU Maritime Reached!",
+    "body": [
+      "Faculty, students, and staff are using ChatGPT daily.",
+      "Your legacy as an AI Trailblazer is secured.",
+      "Campuses deployed: {{campuses}} / 23",
+      "Goodwill remaining: {{goodwill}}",
+      "Budget remaining: ${{budget}}",
+      "Morale: {{morale}}"
+    ],
+    "prompt": "Press ENTER to see the scoring breakdown."
+  },
+  "game_over": {
+    "title": "Rollout Halted",
+    "prompt": "Press ENTER to return to the main menu.",
+    "reasons": {
+      "budget": "The budget was depleted before the rollout finished.",
+      "morale": "Your team burned out and could not continue.",
+      "goodwill": "Systemwide goodwill collapsed and the rollout lost support.",
+      "time": "The academic year ended before you reached all campuses."
+    },
+    "body": [
+      "Final telemetry:",
+      "Campuses deployed: {{campuses}} / 23",
+      "Remaining budget: ${{budget}}",
+      "Goodwill: {{goodwill}}",
+      "Morale: {{morale}}"
+    ]
+  },
+  "launch_briefing": {
+    "boardText": "Launch Date 3/30/2025",
+    "subtitle": "CO Office, Long Beach",
+    "prompt": "Press to Continue"
+  },
+  "cutscene_golden_bear": {
+    "boardText": "Golden Bear Campus",
+    "subtitle": "San Francisco Bay",
+    "prompt": "Press to Continue"
+  },
+  "cutscene_channel_islands": {
+    "boardText": "Channel Islands Campus",
+    "subtitle": "Ventura County",
+    "prompt": "Press to Continue"
+  },
+  "cutscene_long_beach": {
+    "boardText": "Long Beach Campus",
+    "subtitle": "CO Office",
+    "prompt": "Press to Continue"
+  },
+  "progress_status": {
+    "prompt": "Press ENTER to size up the rollout",
+    "stats": [
+      { "label": "Date", "value": "April 1, 2025" },
+      { "label": "Weather", "value": "coastal breeze" },
+      { "label": "Team health", "value": "optimistic" },
+      { "label": "Budget", "value": "$1,200,000" },
+      { "label": "Next milestone", "value": "CSU Channel Islands (102 miles)" },
+      { "label": "Campuses reached", "value": "0 of 23" }
+    ]
+  },
+  "quiz_intro": {
+    "title": "Chancellor's Office Briefing",
+    "body": [
+      "Before you depart, the Chancellor's staff wants to make sure you're aligned on rollout priorities.",
+      "Choose the strategy that best sets up CSU for a successful ChatGPT deployment."
+    ],
+    "options": [
+      {
+        "id": "launch_comms",
+        "label": "Kick off with a statewide communication plan",
+        "description": "Share the vision across all 23 campuses immediately.",
+        "outcome": "Broadcast plan drafted",
+        "nextScene": "progress_status"
+      },
+      {
+        "id": "train_staff",
+        "label": "Train campus implementation teams first",
+        "description": "Make sure everyone knows how to support ChatGPT on day one.",
+        "outcome": "Training blitz scheduled",
+        "nextScene": "progress_status"
+      },
+      {
+        "id": "governance_first",
+        "label": "Secure governance approvals before announcements",
+        "description": "Keep policy leaders on-side before the rollout hits the news.",
+        "outcome": "Governance review in motion",
+        "nextScene": "progress_status"
+      }
+    ],
+    "prompt": "Select your kickoff tactic"
+  }
+}

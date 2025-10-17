@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>OpenAI Trail Layout Helper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #0f172a;
+        color: #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding: 24px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+
+      input[type='file'] {
+        color: inherit;
+      }
+
+      button {
+        background: #2563eb;
+        color: #f8fafc;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 14px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.15s ease-in-out;
+      }
+
+      button:hover {
+        background: #1d4ed8;
+      }
+
+      .viewport-wrapper {
+        background: #020617;
+        padding: 16px;
+        border-radius: 16px;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.45);
+      }
+
+      .viewport {
+        width: 818px;
+        height: 480px;
+        position: relative;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        overflow: hidden;
+        background: repeating-conic-gradient(
+            rgba(30, 41, 59, 0.35) 0deg 10deg,
+            rgba(15, 23, 42, 0.35) 10deg 20deg
+          )
+          center/80px 80px;
+      }
+
+      .viewport::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.35), transparent 55%);
+        pointer-events: none;
+      }
+
+      .viewport img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .selection {
+        position: absolute;
+        border: 2px dashed #fbbf24;
+        background: rgba(251, 191, 36, 0.18);
+        pointer-events: none;
+        transition: border 0.1s linear;
+      }
+
+      .readout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 8px 16px;
+        align-items: center;
+        max-width: 818px;
+      }
+
+      .readout code {
+        background: rgba(15, 23, 42, 0.6);
+        padding: 6px 8px;
+        border-radius: 6px;
+        display: block;
+        font-size: 0.95rem;
+        word-break: break-word;
+      }
+
+      .instructions {
+        max-width: 818px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #cbd5f5;
+      }
+
+      .notice {
+        font-size: 0.85rem;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>OpenAI Trail Scene Layout Helper</h1>
+    </header>
+
+    <section class="controls">
+      <label>
+        Background image:
+        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" />
+      </label>
+      <button id="clearSelection" type="button">Clear selection</button>
+      <button id="copyValues" type="button">Copy values</button>
+      <span class="notice">Viewport is fixed to 818×480 (in-scene content area).</span>
+    </section>
+
+    <section class="viewport-wrapper">
+      <div id="viewport" class="viewport" aria-label="Layout viewport">
+        <img id="background" alt="" hidden />
+        <div id="selection" class="selection" hidden></div>
+      </div>
+    </section>
+
+    <section class="readout" aria-live="polite">
+      <div>
+        <strong>top</strong>
+        <code id="topValue">0</code>
+      </div>
+      <div>
+        <strong>left</strong>
+        <code id="leftValue">0</code>
+      </div>
+      <div>
+        <strong>width</strong>
+        <code id="widthValue">0</code>
+      </div>
+      <div>
+        <strong>height</strong>
+        <code id="heightValue">0</code>
+      </div>
+      <div>
+        <strong>right</strong>
+        <code id="rightValue">818</code>
+      </div>
+      <div>
+        <strong>bottom</strong>
+        <code id="bottomValue">480</code>
+      </div>
+      <div style="grid-column: 1 / -1">
+        <strong>CSS shorthand</strong>
+        <code id="cssValue">padding: 0px 0px 480px 818px;</code>
+      </div>
+    </section>
+
+    <section class="instructions">
+      <p>
+        Drag inside the viewport to draw a rectangle that matches the safe text area for a scene.
+        The readout provides absolute pixel offsets relative to the 818×480 game surface.
+      </p>
+      <p>
+        Share the <em>top</em>, <em>right</em>, <em>bottom</em>, and <em>left</em> values with me, or copy
+        the shorthand and paste it into a table.
+      </p>
+    </section>
+
+    <script>
+      const viewport = document.getElementById('viewport');
+      const background = document.getElementById('background');
+      const selection = document.getElementById('selection');
+      const fileInput = document.getElementById('fileInput');
+      const clearBtn = document.getElementById('clearSelection');
+      const copyBtn = document.getElementById('copyValues');
+
+      const topValue = document.getElementById('topValue');
+      const leftValue = document.getElementById('leftValue');
+      const widthValue = document.getElementById('widthValue');
+      const heightValue = document.getElementById('heightValue');
+      const rightValue = document.getElementById('rightValue');
+      const bottomValue = document.getElementById('bottomValue');
+      const cssValue = document.getElementById('cssValue');
+
+      const VIEWPORT_WIDTH = 818;
+      const VIEWPORT_HEIGHT = 480;
+
+      const state = {
+        selecting: false,
+        startX: 0,
+        startY: 0,
+        rect: null,
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function updateReadout(rect) {
+        if (!rect) {
+          topValue.textContent = '0';
+          leftValue.textContent = '0';
+          widthValue.textContent = '0';
+          heightValue.textContent = '0';
+          rightValue.textContent = String(VIEWPORT_WIDTH);
+          bottomValue.textContent = String(VIEWPORT_HEIGHT);
+          cssValue.textContent = 'padding: 0px 0px 480px 818px;';
+          copyBtn.disabled = true;
+          return;
+        }
+
+        const { top, left, width, height } = rect;
+        const right = VIEWPORT_WIDTH - (left + width);
+        const bottom = VIEWPORT_HEIGHT - (top + height);
+
+        topValue.textContent = String(top);
+        leftValue.textContent = String(left);
+        widthValue.textContent = String(width);
+        heightValue.textContent = String(height);
+        rightValue.textContent = String(right);
+        bottomValue.textContent = String(bottom);
+        cssValue.textContent = `padding: ${top}px ${right}px ${bottom}px ${left}px;`;
+        copyBtn.disabled = false;
+      }
+
+      function clearSelection() {
+        selection.hidden = true;
+        state.rect = null;
+        updateReadout(null);
+      }
+
+      function startSelection(event) {
+        if (event.button !== 0) return;
+        const rect = viewport.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        state.selecting = true;
+        state.startX = clamp(x, 0, rect.width);
+        state.startY = clamp(y, 0, rect.height);
+
+        selection.hidden = false;
+        selection.style.left = `${state.startX}px`;
+        selection.style.top = `${state.startY}px`;
+        selection.style.width = '0px';
+        selection.style.height = '0px';
+
+        viewport.setPointerCapture(event.pointerId);
+      }
+
+      function updateSelection(event) {
+        if (!state.selecting) return;
+        const rect = viewport.getBoundingClientRect();
+        const currentX = clamp(event.clientX - rect.left, 0, rect.width);
+        const currentY = clamp(event.clientY - rect.top, 0, rect.height);
+
+        const left = Math.min(state.startX, currentX);
+        const top = Math.min(state.startY, currentY);
+        const width = Math.abs(currentX - state.startX);
+        const height = Math.abs(currentY - state.startY);
+
+        selection.style.left = `${left}px`;
+        selection.style.top = `${top}px`;
+        selection.style.width = `${width}px`;
+        selection.style.height = `${height}px`;
+
+        state.rect = {
+          top: Math.round(top),
+          left: Math.round(left),
+          width: Math.round(width),
+          height: Math.round(height),
+        };
+        updateReadout(state.rect);
+      }
+
+      function endSelection(event) {
+        if (!state.selecting) return;
+        state.selecting = false;
+        viewport.releasePointerCapture(event.pointerId);
+
+        if (!state.rect || state.rect.width === 0 || state.rect.height === 0) {
+          clearSelection();
+        }
+      }
+
+      function handleFileSelection(event) {
+        const [file] = event.target.files ?? [];
+        if (!file) return;
+
+        const url = URL.createObjectURL(file);
+        background.src = url;
+        background.hidden = false;
+        background.onload = () => {
+          URL.revokeObjectURL(url);
+        };
+      }
+
+      function copyValuesToClipboard() {
+        if (!state.rect) return;
+        const { top, left, width, height } = state.rect;
+        const right = VIEWPORT_WIDTH - (left + width);
+        const bottom = VIEWPORT_HEIGHT - (top + height);
+        const text = [
+          `top: ${top}px`,
+          `left: ${left}px`,
+          `width: ${width}px`,
+          `height: ${height}px`,
+          `right: ${right}px`,
+          `bottom: ${bottom}px`,
+          `padding: ${top}px ${right}px ${bottom}px ${left}px;`,
+        ].join('\n');
+
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy values';
+            }, 1200);
+          })
+          .catch(() => {
+            copyBtn.textContent = 'Copy failed';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy values';
+            }, 1400);
+          });
+      }
+
+      viewport.addEventListener('pointerdown', startSelection);
+      viewport.addEventListener('pointermove', updateSelection);
+      viewport.addEventListener('pointerup', endSelection);
+      viewport.addEventListener('pointerleave', (event) => {
+        if (state.selecting) endSelection(event);
+      });
+
+      clearBtn.addEventListener('click', clearSelection);
+      copyBtn.addEventListener('click', copyValuesToClipboard);
+      copyBtn.disabled = true;
+      fileInput.addEventListener('change', handleFileSelection);
+
+      updateReadout(null);
+    </script>
+  </body>
+</html>
+
