@@ -12,6 +12,9 @@ export class ProgressScene extends BaseScene {
     this.usersValueElement = null;
     this.dateValueElement = null;
     this.campusesValueElement = null;
+    this.healthValueElement = null;
+    this.nextValueElement = null;
+    this.contextOverrides = {};
     this.dateLabel = 'Date';
   }
 
@@ -20,6 +23,8 @@ export class ProgressScene extends BaseScene {
 
     this.clear();
     this.root.classList.add('progress-scene');
+
+    this.contextOverrides = this.extractOverrides();
 
     const wrapper = document.createElement('div');
     wrapper.className = 'progress-scene__wrapper';
@@ -54,7 +59,6 @@ export class ProgressScene extends BaseScene {
     const statsList = Array.isArray(prompts.stats) ? prompts.stats : [];
     const snapshot = this.game?.getSnapshot?.() ?? null;
     const context = this.buildContext(snapshot);
-    this.updateDisplayedValues(context);
 
     const dateEntry = this.findEntry(statsList, 'date');
     if (dateEntry) {
@@ -124,6 +128,7 @@ export class ProgressScene extends BaseScene {
       this.root.addEventListener('click', this.handleContinue);
     }, 0);
 
+    this.updateDisplayedValues(context);
     this.animateUsers();
   }
 
@@ -157,6 +162,9 @@ export class ProgressScene extends BaseScene {
     this.usersValueElement = null;
     this.dateValueElement = null;
     this.campusesValueElement = null;
+    this.healthValueElement = null;
+    this.nextValueElement = null;
+    this.contextOverrides = {};
     if (this.progressVideo) {
       this.progressVideo.pause();
       this.progressVideo.currentTime = 0;
@@ -165,6 +173,10 @@ export class ProgressScene extends BaseScene {
   }
 
   animateUsers() {
+    if (!this.shouldAnimateUsers()) {
+      return;
+    }
+
     if (!this.usersValueElement || !this.game?.advanceUsers) {
       return;
     }
@@ -219,6 +231,26 @@ export class ProgressScene extends BaseScene {
     this.animationFrame = requestAnimationFrame(step);
   }
 
+  shouldAnimateUsers() {
+    if (!this.game?.advanceUsers) {
+      return false;
+    }
+    if (!this.usersValueElement) {
+      return false;
+    }
+
+    const overrides = this.contextOverrides ?? {};
+    if (overrides?.animateUsers === false) {
+      return false;
+    }
+
+    const hasUsersOverride = Object.prototype.hasOwnProperty.call(overrides, 'users');
+    const hasDateOverride = Object.prototype.hasOwnProperty.call(overrides, 'date');
+    const hasCampusesOverride = Object.prototype.hasOwnProperty.call(overrides, 'campuses');
+
+    return !hasUsersOverride && !hasDateOverride && !hasCampusesOverride;
+  }
+
   findEntry(entries, key) {
     const target = key.toLowerCase();
     return entries.find((entry) => {
@@ -238,17 +270,27 @@ export class ProgressScene extends BaseScene {
 
     const value = document.createElement('span');
     value.className = 'progress-scene__stat-value';
+    const source = (entry?.source ?? '').toLowerCase();
+    value.dataset.source = source;
+    if (entry.value !== undefined) {
+      value.dataset.fallback = `${entry.value}`;
+    }
     value.textContent = this.resolveStatValue(entry, context);
 
     row.appendChild(label);
     row.appendChild(value);
 
-    const source = (entry?.source ?? '').toLowerCase();
     if (source === 'users') {
       this.usersValueElement = value;
     }
     if (source === 'campuses') {
       this.campusesValueElement = value;
+    }
+    if (source === 'health') {
+      this.healthValueElement = value;
+    }
+    if (source === 'next' || source === 'nextcampus') {
+      this.nextValueElement = value;
     }
 
     return row;
@@ -267,29 +309,59 @@ export class ProgressScene extends BaseScene {
     if (this.dateValueElement) {
       this.dateValueElement.textContent = `${this.dateLabel}: ${context.date ?? ''}`;
     }
+    if (this.healthValueElement) {
+      const fallback = this.healthValueElement.dataset?.fallback ?? '';
+      this.healthValueElement.textContent = this.formatHealth(context.health, fallback);
+    }
+    if (this.nextValueElement) {
+      const fallback = this.nextValueElement.dataset?.fallback ?? '';
+      this.nextValueElement.textContent = this.formatNext(context.next, fallback);
+    }
   }
 
-  buildContext(snapshot) {
-    if (!snapshot) {
-      return {
-        date: '',
-        users: 0,
-        campuses: {
-          reached: 0,
-          total: this.game?.totalCampuses ?? 0,
-        },
+  buildContext(snapshot, overrides = this.contextOverrides ?? {}) {
+    const base = snapshot
+      ? {
+          date: this.game?.formatTimeline?.(snapshot.timeline) ?? '',
+          users: snapshot.users ?? 0,
+          campuses: {
+            reached: snapshot.campusesReached ?? snapshot.progressVisits ?? 0,
+            total: this.game?.totalCampuses ?? 0,
+          },
+          health: snapshot.morale ?? 0,
+          next: undefined,
+        }
+      : {
+          date: '',
+          users: 0,
+          campuses: {
+            reached: 0,
+            total: this.game?.totalCampuses ?? 0,
+          },
+          health: undefined,
+          next: undefined,
+        };
+
+    if (overrides?.date !== undefined) {
+      base.date = overrides.date;
+    }
+    if (overrides?.users !== undefined) {
+      base.users = overrides.users;
+    }
+    if (overrides?.health !== undefined) {
+      base.health = overrides.health;
+    }
+    if (overrides?.next !== undefined) {
+      base.next = overrides.next;
+    }
+    if (overrides?.campuses) {
+      base.campuses = {
+        reached: overrides.campuses.reached ?? base.campuses.reached,
+        total: overrides.campuses.total ?? base.campuses.total,
       };
     }
 
-    return {
-      date: this.game?.formatTimeline?.(snapshot.timeline) ?? '',
-      users: snapshot.users ?? 0,
-      campuses: {
-        reached: snapshot.campusesReached ?? snapshot.progressVisits ?? 0,
-        total: this.game?.totalCampuses ?? 0,
-      },
-      health: snapshot.morale ?? 0,
-    };
+    return base;
   }
 
   resolveStatValue(entry, context) {
@@ -305,8 +377,98 @@ export class ProgressScene extends BaseScene {
         const total = context.campuses?.total ?? 0;
         return `${reached} / ${total}`;
       }
+      case 'health':
+        return this.formatHealth(context.health, entry.value ?? '');
+      case 'next':
+      case 'nextcampus':
+        return this.formatNext(context.next, entry.value ?? '');
       default:
         return entry.value ?? '';
     }
+  }
+
+  extractOverrides() {
+    const progressProps = this.props?.progress && typeof this.props.progress === 'object' ? this.props.progress : null;
+    const directProps = this.props && typeof this.props === 'object' ? this.props : null;
+    const overrides = {};
+
+    const apply = (source) => {
+      if (!source || typeof source !== 'object') return;
+      if (source.date !== undefined) {
+        overrides.date = source.date;
+      }
+      if (source.users !== undefined) {
+        overrides.users = source.users;
+      }
+      if (source.health !== undefined) {
+        overrides.health = source.health;
+      }
+      if (source.next !== undefined) {
+        overrides.next = source.next;
+      }
+      if (source.nextCampus !== undefined) {
+        overrides.next = source.nextCampus;
+      }
+      if (source.animateUsers === false) {
+        overrides.animateUsers = false;
+      }
+      const campuses = this.normalizeCampusOverrides(source);
+      if (campuses) {
+        overrides.campuses = campuses;
+      }
+    };
+
+    apply(progressProps);
+
+    const directHasOverrides = directProps
+      ? ['date', 'users', 'health', 'next', 'nextCampus', 'campuses', 'campusesReached', 'campusesTotal'].some(
+          (key) => directProps[key] !== undefined
+        )
+      : false;
+
+    if (!progressProps && directHasOverrides) {
+      apply(directProps);
+    }
+
+    return overrides;
+  }
+
+  normalizeCampusOverrides(source) {
+    if (!source) return null;
+    if (source.campuses && typeof source.campuses === 'object') {
+      const { reached, total } = source.campuses;
+      return {
+        reached: reached ?? source.campusesReached ?? source.reached,
+        total: total ?? source.campusesTotal ?? source.total,
+      };
+    }
+
+    const reached = source.campusesReached ?? source.reached;
+    const total = source.campusesTotal ?? source.total;
+    if (reached !== undefined || total !== undefined) {
+      return {
+        reached: reached ?? 0,
+        total: total ?? this.game?.totalCampuses ?? 0,
+      };
+    }
+
+    return null;
+  }
+
+  formatHealth(value, fallback = '') {
+    if (value === undefined || value === null || value === '') {
+      return `${fallback}`;
+    }
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return `${Math.round(value)}`;
+    }
+    return `${value}`;
+  }
+
+  formatNext(value, fallback = '') {
+    if (value === undefined || value === null || value === '') {
+      return `${fallback}`;
+    }
+    return `${value}`;
   }
 }
