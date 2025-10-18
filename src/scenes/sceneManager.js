@@ -5,17 +5,28 @@ export class SceneManager {
     this.scenes = new Map();
     this.currentScene = null;
     this.currentSceneName = null;
+    this.internalHashUpdate = false;
+
+    this.handleHashChange = this.handleHashChange.bind(this);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('hashchange', this.handleHashChange);
+    }
   }
 
   register(name, SceneClass) {
     this.scenes.set(name, SceneClass);
   }
 
-  start(name, props) {
-    this.transitionTo(name, props);
+  hasScene(name) {
+    return this.scenes.has(name);
   }
 
-  transitionTo(name, props) {
+  start(name, props, options) {
+    this.transitionTo(name, props, options);
+  }
+
+  transitionTo(name, props, options = {}) {
+    const { updateHash = true } = options;
     const SceneClass = this.scenes.get(name);
     if (!SceneClass) {
       throw new Error(`Scene "${name}" is not registered.`);
@@ -44,5 +55,28 @@ export class SceneManager {
     if (this.currentScene?.mount) {
       this.currentScene.mount();
     }
+
+    if (updateHash && typeof window !== 'undefined') {
+      const desiredHash = `#${name}`;
+      if (window.location.hash !== desiredHash) {
+        this.internalHashUpdate = true;
+        window.location.hash = desiredHash;
+      }
+    }
+  }
+
+  handleHashChange() {
+    if (this.internalHashUpdate) {
+      this.internalHashUpdate = false;
+      return;
+    }
+
+    if (typeof window === 'undefined') return;
+    const hash = window.location.hash.replace(/^#/, '');
+    if (!hash || hash === this.currentSceneName || !this.hasScene(hash)) {
+      return;
+    }
+
+    this.transitionTo(hash, undefined, { updateHash: false });
   }
 }

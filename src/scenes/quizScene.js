@@ -8,7 +8,7 @@ export class QuizScene extends BaseScene {
   }
 
   mount() {
-    const prompts = this.getPrompt('quiz_intro');
+    const prompts = this.getPrompt(this.sceneName) ?? this.getPrompt('quiz_intro');
     if (!prompts) {
       throw new Error('Missing quiz_intro prompts.');
     }
@@ -37,7 +37,8 @@ export class QuizScene extends BaseScene {
       });
     }
 
-    const nextScene = option.nextScene ?? this.resolveTransition('quiz_intro.select', 'progress_status');
+    const resolutionKey = `${this.sceneName}.select`;
+    const nextScene = option.nextScene ?? this.resolveTransition(resolutionKey, 'progress_status');
     this.navigate(nextScene, { source: 'quiz_intro', choice: option.id });
   }
 
@@ -45,4 +46,3 @@ export class QuizScene extends BaseScene {
     this.menu.detach();
   }
 }
-

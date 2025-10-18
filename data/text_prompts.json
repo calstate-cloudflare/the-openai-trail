@@ -100,7 +100,7 @@
       {
         "id": "launch_immediately",
         "label": "Right now (January)",
-        "description": "The only choice the Chancellor\u2019s Office will approve.",
+        "description": "The only choice the Chancellor’s Office will approve.",
         "month": 1,
         "nextScene": "resource_allocation"
       },
@@ -158,7 +158,7 @@
     "prompt": "Which role would you like to secure?"
   },
   "core_loop": {
-    "title": "The OpenAI Trail \u2014 Status",
+    "title": "The OpenAI Trail — Status",
     "statusLabels": [
       "Weather",
       "Morale",
@@ -206,7 +206,7 @@
       {
         "id": "request_funding",
         "label": "Request emergency funding",
-        "description": "Beg the Chancellor\u2019s Office for more money."
+        "description": "Beg the Chancellor’s Office for more money."
       }
     ],
     "prompt": "What is your choice?"
@@ -230,7 +230,7 @@
       {
         "id": "grueling",
         "label": "Grueling",
-        "description": "Burn the midnight oil\u2014at a steep morale cost."
+        "description": "Burn the midnight oil—at a steep morale cost."
       }
     ],
     "prompt": "Select the new rollout pace."
@@ -279,7 +279,7 @@
       {
         "id": "reach_maritime",
         "label": "Reach CSU Maritime",
-        "result": "\ud83c\udf89 Win (successful rollout)"
+        "result": "🎉 Win (successful rollout)"
       },
       {
         "id": "lose_staff",
@@ -306,7 +306,7 @@
       "Campuses deployed: +50 pts each",
       "Remaining goodwill: +1 pt / 25 units",
       "Remaining budget: +1 pt / $5",
-      "Bonus multiplier based on role (\u00d71\u2013\u00d73)"
+      "Bonus multiplier based on role (×1–×3)"
     ],
     "prompt": "Press ENTER to continue."
   },
@@ -356,49 +356,220 @@
   },
   "cutscene_long_beach": {
     "boardText": "Long Beach Campus",
-    "subtitle": "CO Office",
+    "subtitle": "Long Beach",
     "prompt": "Press to Continue"
   },
   "progress_status": {
-    "prompt": "Press ENTER to size up the rollout",
+    "prompt": "Press ENTER to continue the rollout",
     "stats": [
-      { "label": "Date", "value": "April 1, 2025" },
-      { "label": "Weather", "value": "coastal breeze" },
-      { "label": "Team health", "value": "optimistic" },
-      { "label": "Budget", "value": "$1,200,000" },
-      { "label": "Next milestone", "value": "CSU Channel Islands (102 miles)" },
-      { "label": "Campuses reached", "value": "0 of 23" }
+      {
+        "label": "Date",
+        "source": "date"
+      },
+      {
+        "label": "Users",
+        "source": "users"
+      },
+      {
+        "label": "Campuses",
+        "source": "campuses"
+      },
+      {
+        "label": "Health",
+        "value": "optimistic"
+      },
+      {
+        "label": "Next",
+        "value": "Cal Maritime"
+      }
     ]
   },
   "quiz_intro": {
-    "title": "Chancellor's Office Briefing",
+    "title": "What would you do?",
     "body": [
-      "Before you depart, the Chancellor's staff wants to make sure you're aligned on rollout priorities.",
-      "Choose the strategy that best sets up CSU for a successful ChatGPT deployment."
+      "The CSU Board wants to make sure you're aware of the system's biggest risks.",
+      "Which challenge must be tackled first to ensure a sustainable ChatGPT rollout across the CSU?"
     ],
     "options": [
       {
-        "id": "launch_comms",
-        "label": "Kick off with a statewide communication plan",
-        "description": "Share the vision across all 23 campuses immediately.",
-        "outcome": "Broadcast plan drafted",
+        "id": "capacity_gap",
+        "label": "Campuses Ability to Support",
+        "description": "Most campuses lack trained AI support teams and structure to sustain deployment.",
+        "outcome": "Local readiness plans drafted",
         "nextScene": "progress_status"
       },
       {
-        "id": "train_staff",
-        "label": "Train campus implementation teams first",
-        "description": "Make sure everyone knows how to support ChatGPT on day one.",
-        "outcome": "Training blitz scheduled",
+        "id": "tech_evolution",
+        "label": "Blazing Pace of AI",
+        "description": "Frequent new AI features demand continuous security and policy reviews.",
+        "outcome": "Feature governance board convened",
         "nextScene": "progress_status"
       },
       {
-        "id": "governance_first",
-        "label": "Secure governance approvals before announcements",
-        "description": "Keep policy leaders on-side before the rollout hits the news.",
-        "outcome": "Governance review in motion",
+        "id": "stakeholder_alignment",
+        "label": "Stakeholders Alignment",
+        "description": "Faculty and leadership need a shared vision before expanding systemwide adoption.",
+        "outcome": "Stakeholder summit scheduled",
         "nextScene": "progress_status"
       }
     ],
-    "prompt": "Select your kickoff tactic"
+    "prompt": "Which do you see as the biggest hurdle?"
+  },
+  "quiz_phase2": {
+    "title": "Emerging Issues in Edu",
+    "body": [
+      "As AI develops, new risks arise in teaching, research, and student well-being.",
+      "Which threat should we most vigilantly guard against in an academic environment?"
+    ],
+    "options": [
+      {
+        "id": "academic_integrity",
+        "label": "AI-assisted academic misconduct",
+        "description": "Students or faculty using AI to generate content without attribution—creating new forms of plagiarism.",
+        "outcome": "Integrity oversight committee formed",
+        "nextScene": "cutscene_maritime"
+      },
+      {
+        "id": "ai_sycophancy",
+        "label": "AI-induced mental fatigue and sycophancy",
+        "description": "Constant AI use can create dependency—students may seek affirmation from AI instead of feedback from peers or faculty.",
+        "outcome": "Digital wellness taskforce convened",
+        "nextScene": "cutscene_maritime"
+      },
+      {
+        "id": "fake_research",
+        "label": "Fake AI-generated research output",
+        "description": "Researchers or bad actors submitting AI-generated papers, false data & citations that compromise academic credibility.",
+        "outcome": "Peer audit & detection protocol launched",
+        "nextScene": "cutscene_maritime"
+      }
+    ],
+    "prompt": "Select the area of highest concern"
+  },
+  "quiz_phase3": {
+  "title": "Campus Triage",
+  "body": [
+    "The Cal Maritime pilot proved ChatGPT the technical roll-out, scaling to 22 more campuses brings new complexity.",
+    "With limited central staff, where should the focus go next?"
+  ],
+  "options": [
+    {
+      "id": "small_campuses",
+      "label": "Support smaller campuses first",
+      "description": "They adopt quickly and need hands-on guidance, but their small user bases limit overall impact on systemwide adoption goals.",
+      "outcome": "Smaller campuses thrive, but total license utilization lags behind targets.",
+      "nextScene": "progress_status"
+    },
+    {
+      "id": "large_campuses",
+      "label": "Engage large campuses with influence",
+      "description": "They represent the bulk of CSU’s users and visibility, but may resist alignment due to existing AI strategies and governance structures.",
+      "outcome": "High-impact campuses onboard slowly, requiring sustained negotiation and trust-building.",
+      "nextScene": "progress_status"
+    },
+    {
+      "id": "coalition_willing",
+      "label": "Form a Coalition of the Willing",
+      "description": "Unite campuses eager to collaborate—strength: shared enthusiasm and momentum; threat: uneven adoption and fragmented governance.",
+      "outcome": "Coalition drives rapid innovation, though policy alignment lags across the system.",
+      "nextScene": "progress_status"
+    }
+  ],
+  "prompt": "Choose how to expand the rollout beyond Cal Maritime"
+},
+  "quiz_phase4": {
+    "title": "Operational Pulse",
+    "body": [
+      "The rollout heartbeat stays strong. Where do you focus to keep it steady?"
+    ],
+    "options": [
+      {
+        "id": "campus_roadshow",
+        "label": "Launch a campus roadshow",
+        "description": "Bring the team to regional hubs.",
+        "outcome": "Roadshow slate announced",
+        "nextScene": "cutscene_channel_islands"
+      },
+      {
+        "id": "faculty_advocates",
+        "label": "Recruit faculty advocates",
+        "description": "Empower early adopters to teach peers.",
+        "outcome": "Faculty advocate cohort formed",
+        "nextScene": "cutscene_channel_islands"
+      },
+      {
+        "id": "analytics_push",
+        "label": "Publish usage analytics",
+        "description": "Share wins to keep leadership energized.",
+        "outcome": "Usage analytics shared",
+        "nextScene": "cutscene_channel_islands"
+      }
+    ],
+    "prompt": "Select the next initiative"
+  },
+  "quiz_phase5": {
+    "title": "Channel Islands Check-in",
+    "body": [
+      "CSU Channel Islands is gearing up. What do they need from you now?"
+    ],
+    "options": [
+      {
+        "id": "student_forum",
+        "label": "Host a student forum",
+        "description": "Hear priorities directly from learners.",
+        "outcome": "Student voices incorporated",
+        "nextScene": "progress_status"
+      },
+      {
+        "id": "research_pilot",
+        "label": "Stand up a research pilot",
+        "description": "Showcase AI in academic projects.",
+        "outcome": "Research pilot underway",
+        "nextScene": "progress_status"
+      },
+      {
+        "id": "support_desk",
+        "label": "Expand support desk",
+        "description": "Scale frontline help as adoption spikes.",
+        "outcome": "Support coverage extended",
+        "nextScene": "progress_status"
+      }
+    ],
+    "prompt": "How do you support Channel Islands?"
+  },
+  "quiz_phase6": {
+    "title": "Final Stretch",
+    "body": [
+      "Before you brief Long Beach, choose the push that seals the rollout story."
+    ],
+    "options": [
+      {
+        "id": "leadership_summit",
+        "label": "Host a leadership summit",
+        "description": "Share systemwide impact with executives.",
+        "outcome": "Leadership summit confirmed",
+        "nextScene": "cutscene_long_beach"
+      },
+      {
+        "id": "communications_blast",
+        "label": "Launch the final comms blast",
+        "description": "Celebrate wins across all campuses.",
+        "outcome": "Celebration plan drafted",
+        "nextScene": "cutscene_long_beach"
+      },
+      {
+        "id": "support_toolkit",
+        "label": "Ship the final toolkit",
+        "description": "Ensure every campus has rollout resources.",
+        "outcome": "Toolkit distributed",
+        "nextScene": "cutscene_long_beach"
+      }
+    ],
+    "prompt": "Lock in your final push"
+  },
+  "cutscene_maritime": {
+    "boardText": "Cal Maritime Pilot",
+    "subtitle": "Golden Bear Deck",
+    "prompt": "Press to Continue"
   }
 }

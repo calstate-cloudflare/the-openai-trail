@@ -54,6 +54,29 @@ body {
   --screen-scale: 1;
 }
 
+.skip-link {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 12px;
+  padding: 3px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+  z-index: 6;
+}
+
+.skip-link:hover,
+.skip-link:focus-visible {
+  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 main {
   width: 818px;
   height: 480px;
@@ -161,8 +184,13 @@ main::after {
 }
 
 .screen[data-scene='quiz_intro'] {
-  padding: 4px 20px 20px 20px;
+  padding: 10px 40px 28px 40px;
   gap: 10px;
+}
+
+.screen[data-scene^='quiz_phase'] {
+  padding: 12px 20px 32px 20px;
+  gap: 12px;
 }
 
 .screen[data-scene='progress_status'] {
@@ -281,6 +309,10 @@ main::after {
   max-width: 520px;
 }
 
+.screen[data-scene^='quiz_phase'] .menu__text-wrapper {
+  max-width: 100%;
+}
+
 .screen[data-scene='role_selection'] .menu {
   gap: 8px;
 }
@@ -365,6 +397,11 @@ main::after {
 .screen[data-scene='quiz_intro'] .menu__button {
   min-width: 520px;
   max-width: 520px;
+}
+
+.screen[data-scene^='quiz_phase'] .menu__button {
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .menu__description {
@@ -507,7 +544,9 @@ main::after {
   border-bottom: 2px solid var(--crt-border);
 }
 
-.progress-scene__visual img {
+.progress-scene__visual img,
+.progress-scene__visual video,
+.progress-scene__visual .progress-scene__visual-media {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -518,31 +557,55 @@ main::after {
   flex: 1;
   background: #f5f5f5;
   color: #0a0a0a;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: min-content;
-  padding: 16px 24px 24px;
-  gap: 12px 32px;
-  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 22px 20px;
+  gap: 10px;
+  font-size: 13px;
   font-family: 'CodeGon Mono', 'CodeGon', monospace;
   border-bottom: 2px solid var(--crt-border);
 }
 
+.progress-scene__date {
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.progress-scene__date-value {
+  font-size: 14px;
+}
+
+.progress-scene__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 40px;
+  width: 100%;
+}
+
+.progress-scene__stats-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .progress-scene__stat-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .progress-scene__stat-label {
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  min-width: 140px;
+  letter-spacing: 0.05em;
+  min-width: 120px;
 }
 
 .progress-scene__stat-value {
   flex: 1;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 .progress-scene__prompt {
@@ -553,6 +616,25 @@ main::after {
   font-size: 14px;
   text-align: center;
   padding: 12px 0;
+}
+
+.progress-scene__continue {
+  margin: 12px auto 16px;
+  padding: 4px 18px;
+  border: 1px solid rgba(143, 238, 150, 0.4);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--crt-white);
+  font-family: 'CodeGon Mono', 'CodeGon', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.progress-scene__continue:hover,
+.progress-scene__continue:focus-visible {
+  opacity: 0.8;
+  border-color: rgba(143, 238, 150, 0.8);
 }
 
 .menu__note {
@@ -607,12 +689,16 @@ main::after {
   --screen-background: url('../img/backgrounds/golden-bear.png');
 }
 
+#frame[data-background='cutscene_maritime'] {
+  --screen-background: url('../img/backgrounds/golden-bear.png');
+}
+
 #frame[data-background='cutscene_channel_islands'] {
   --screen-background: url('../img/backgrounds/channel-islands.png');
 }
 
 #frame[data-background='cutscene_long_beach'] {
-  --screen-background: url('../img/backgrounds/longbeach.png');
+  --screen-background: url('../img/backgrounds/long-beach.png');
 }
 
 #frame[data-background='progress_status'] {

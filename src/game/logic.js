@@ -3,6 +3,8 @@ import { filterEligibleEvents, applyEventEffects } from './events.js';
 const TOTAL_CAMPUSES = 23;
 const DEFAULT_STARTING_BUDGET = 800;
 const DEFAULT_ROLE_MULTIPLIER = 1;
+const USERS_INCREMENT = 1000;
+const PROGRESS_TIMELINE_INCREMENT_DAYS = 31;
 
 export class GameLogic {
   constructor({ textPrompts, eventsConfig }) {
@@ -29,9 +31,12 @@ export class GameLogic {
       timeline: {
         year: 2025,
         month: 1,
+        day: 1,
       },
       staff: [],
       travelLog: [],
+      users: 0,
+      progressVisits: 0,
     };
 
     this.emit('state:reset', this.state);
@@ -79,6 +84,55 @@ export class GameLogic {
 
   getTravelLog() {
     return this.state.travelLog.slice();
+  }
+
+  getUsers() {
+    return this.state.users;
+  }
+
+  formatTimeline(timeline = this.state.timeline) {
+    const { year, month, day } = timeline;
+    const date = new Date(year, (month ?? 1) - 1, day ?? 1);
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date);
+  }
+
+  advanceUsers() {
+    const start = this.state.users;
+    const previousTimeline = { ...this.state.timeline };
+
+    this.state.users += USERS_INCREMENT;
+    this.state.progressVisits += 1;
+    this.state.timeline = this.incrementTimeline(previousTimeline);
+
+    this.emit('users:changed', {
+      from: start,
+      to: this.state.users,
+      timeline: { from: previousTimeline, to: { ...this.state.timeline } },
+    });
+
+    return {
+      start,
+      end: this.state.users,
+      timeline: {
+        previous: previousTimeline,
+        current: { ...this.state.timeline },
+      },
+    };
+  }
+
+  incrementTimeline(timeline = this.state.timeline) {
+    const base = timeline ?? this.state.timeline;
+    const date = new Date(base.year, (base.month ?? 1) - 1, base.day ?? 1);
+    date.setDate(date.getDate() + PROGRESS_TIMELINE_INCREMENT_DAYS);
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
   }
 
   // --- State Mutators ------------------------------------------------------

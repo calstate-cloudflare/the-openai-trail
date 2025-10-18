@@ -6,9 +6,16 @@
     "resource_allocation.finish": "launch_briefing",
     "launch_briefing.continue": "quiz_intro",
     "quiz_intro.select": "progress_status",
-    "cutscene_golden_bear.continue": "travel",
-    "cutscene_channel_islands.continue": "travel",
-    "cutscene_long_beach.continue": "travel",
-    "progress_status.continue": "travel"
+    "progress_status.continue.1": "quiz_phase2",
+    "quiz_phase2.select": "cutscene_maritime",
+    "cutscene_maritime.continue": "quiz_phase3",
+    "quiz_phase3.select": "progress_status",
+    "progress_status.continue.2": "quiz_phase4",
+    "quiz_phase4.select": "cutscene_channel_islands",
+    "cutscene_channel_islands.continue": "quiz_phase5",
+    "quiz_phase5.select": "progress_status",
+    "progress_status.continue.3": "quiz_phase6",
+    "quiz_phase6.select": "cutscene_long_beach",
+    "cutscene_long_beach.continue": "travel"
   }
 }

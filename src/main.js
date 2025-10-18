@@ -61,13 +61,36 @@ async function bootstrap() {
     sceneManager.register('leaderboard', InfoScene);
     sceneManager.register('launch_briefing', LaunchBriefingScene);
     sceneManager.register('quiz_intro', QuizScene);
+    sceneManager.register('quiz_phase2', QuizScene);
+    sceneManager.register('quiz_phase3', QuizScene);
+    sceneManager.register('quiz_phase4', QuizScene);
+    sceneManager.register('quiz_phase5', QuizScene);
+    sceneManager.register('quiz_phase6', QuizScene);
     sceneManager.register('cutscene_golden_bear', CutsceneScene);
+    sceneManager.register('cutscene_maritime', CutsceneScene);
     sceneManager.register('cutscene_channel_islands', CutsceneScene);
     sceneManager.register('cutscene_long_beach', CutsceneScene);
     sceneManager.register('progress_status', ProgressScene);
 
-    const initialScene = flowConfig?.initialScene ?? 'main_menu';
-    sceneManager.start(initialScene);
+    let initialScene = flowConfig?.initialScene ?? 'main_menu';
+    let shouldUpdateHash = true;
+
+    if (typeof window !== 'undefined') {
+      const hashScene = window.location.hash.replace(/^#/, '');
+      if (hashScene && sceneManager.hasScene(hashScene)) {
+        initialScene = hashScene;
+        shouldUpdateHash = false;
+      }
+    }
+
+    sceneManager.start(initialScene, undefined, { updateHash: shouldUpdateHash });
+
+    const skipButton = document.getElementById('skip-launch');
+    if (skipButton) {
+      skipButton.addEventListener('click', () => {
+        sceneManager.transitionTo('launch_briefing');
+      });
+    }
   } catch (error) {
     console.error(error);
     mountError(root, error);

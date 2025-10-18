@@ -39,8 +39,16 @@ Scene transitions are data-driven via `/data/flow.json`. Set `initialScene` to c
 - `resource_allocation.finish`: when the player leaves the staffing screen.
 - `launch_briefing.continue`: when the Chancellor’s Office splash is dismissed.
 - `quiz_intro.select`: choice made on the kickoff strategy quiz.
+- `progress_status.continue.1/2/3`: branching points after each status check (routes to quiz_phase2/4/6).
+- `quiz_phase2.select`, `quiz_phase3.select`, `quiz_phase4.select`, `quiz_phase5.select`, `quiz_phase6.select`: follow-up quizzes in the rollout cycle.
+- `cutscene_maritime.continue`, `cutscene_channel_islands.continue`, `cutscene_long_beach.continue`: campus beat screens tying into the progress loop.
 - `cutscene_golden_bear.continue`, `cutscene_channel_islands.continue`, `cutscene_long_beach.continue`: cut-scene beat screens tied to their respective backgrounds.
 - `progress_status.continue`: rollout progress dashboard with animated header.
+
+### Testing Aids
+
+- Tap the subtle “Skip” button in the top-right corner of the frame to jump directly to the Chancellor’s Office launch briefing during development.
+- You can deep-link to any scene by appending its ID as a hash (e.g. `/#quiz_phase2`). The URL updates automatically as you navigate so you can refresh or share a specific page.
 
 Update the target scene string to steer the campaign without touching JavaScript.
 
