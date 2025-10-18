@@ -10,6 +10,7 @@ import { ChangePaceScene } from './scenes/changePace.js';
 import { ChangeEngagementScene } from './scenes/changeEngagement.js';
 import { VictoryScene, GameOverScene } from './scenes/endScenes.js';
 import { InfoScene } from './scenes/infoScene.js';
+import { AboutCsuScene } from './scenes/aboutCsu.js';
 import { LaunchBriefingScene } from './scenes/launchBriefing.js';
 import { CutsceneScene } from './scenes/cutscene.js';
 import { ProgressScene } from './scenes/progressScene.js';
@@ -48,7 +49,7 @@ async function bootstrap() {
 
     sceneManager.register('main_menu', MainMenuScene);
     sceneManager.register('role_selection', RoleSelectionScene);
-    sceneManager.register('about_csu', InfoScene);
+    sceneManager.register('about_csu', AboutCsuScene);
     sceneManager.register('team_naming', TeamNamingScene);
     sceneManager.register('start_timing', StartTimingScene);
     sceneManager.register('resource_allocation', ResourceAllocationScene);

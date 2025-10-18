@@ -61,12 +61,13 @@
     "prompt": "Who will lead the rollout?"
   },
   "about_csu": {
-    "title": "Rolling Across the CSU",
-    "body": [
-      "You are coordinating a rollout that touches 23 diverse campuses, from Humboldt to San Diego.",
-      "Each location has unique faculty culture, infrastructure readiness, and appetite for AI experimentation.",
-      "To succeed you must keep morale high, satisfy governance reviews, and prove value through adoption metrics.",
-      "Prepare your team, set the right pace, and brace for the unexpected."
+    "title": "California State University System",
+    "logoMark": "CSU",
+    "logoText": "California State University",
+    "logoLabel": "California State University system logo",
+    "scrollContent": [
+      "The California State University (CSU) system is the nation's largest public four-year university network, stretching from Humboldt in the north to San Diego in the south. Its campuses share a commitment to accessible, high-quality higher education that powers social mobility and workforce readiness for Californians.",
+      "More than 23 universities, 460,000 students, and 56,000 faculty and staff collaborate through the CSU to advance research, community partnerships, and statewide economic impact. Coordinating technology, infrastructure, and academic innovation across such scale requires shared governance, responsive support, and storytelling that keeps every campus connected."
     ],
     "prompt": "Press ENTER to return to the main menu."
   },
