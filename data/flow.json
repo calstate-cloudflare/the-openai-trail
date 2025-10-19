@@ -16,6 +16,9 @@
     "quiz_phase5.select": "progress_status",
     "progress_status.continue.3": "quiz_phase6",
     "quiz_phase6.select": "cutscene_long_beach",
-    "cutscene_long_beach.continue": "travel"
+    "cutscene_long_beach.continue": "progress_status",
+    "progress_status.continue.4": "cutscene_educause",
+    "cutscene_educause.continue": "the_end"
   }
 }
+

@@ -16,6 +16,9 @@ export class ProgressScene extends BaseScene {
     this.nextValueElement = null;
     this.contextOverrides = {};
     this.dateLabel = 'Date';
+    this.initialContext = null;
+    this.finalContext = null;
+    this.overrideCommitted = false;
   }
 
   mount() {
@@ -32,7 +35,8 @@ export class ProgressScene extends BaseScene {
     const visual = document.createElement('div');
     visual.className = 'progress-scene__visual';
     const progressVideo = document.createElement('video');
-    progressVideo.src = 'img/backgrounds/bld.mp4';
+    const videoSource = this.resolveVideoSource(prompts);
+    progressVideo.src = videoSource;
     progressVideo.autoplay = true;
     progressVideo.muted = true;
     progressVideo.playsInline = true;
@@ -58,7 +62,10 @@ export class ProgressScene extends BaseScene {
 
     const statsList = Array.isArray(prompts.stats) ? prompts.stats : [];
     const snapshot = this.game?.getSnapshot?.() ?? null;
-    const context = this.buildContext(snapshot);
+    const initialContext = this.buildContext(snapshot, {});
+    const finalContext = this.buildContext(snapshot);
+    this.initialContext = initialContext;
+    this.finalContext = finalContext;
 
     const dateEntry = this.findEntry(statsList, 'date');
     if (dateEntry) {
@@ -67,7 +74,7 @@ export class ProgressScene extends BaseScene {
       dateBlock.className = 'progress-scene__date';
       const dateValue = document.createElement('span');
       dateValue.className = 'progress-scene__date-value';
-      dateValue.textContent = `${this.dateLabel}: ${context.date}`;
+      dateValue.textContent = `${this.dateLabel}: ${initialContext.date}`;
       dateBlock.appendChild(dateValue);
       statsPanel.appendChild(dateBlock);
       this.dateValueElement = dateValue;
@@ -86,13 +93,13 @@ export class ProgressScene extends BaseScene {
     leftOrder.forEach((labelKey) => {
       const entry = this.findEntry(statsList, labelKey);
       if (!entry) return;
-      leftColumn.appendChild(this.renderStatRow(entry, context));
+      leftColumn.appendChild(this.renderStatRow(entry, initialContext));
     });
 
     rightOrder.forEach((labelKey) => {
       const entry = this.findEntry(statsList, labelKey);
       if (!entry) return;
-      rightColumn.appendChild(this.renderStatRow(entry, context));
+      rightColumn.appendChild(this.renderStatRow(entry, initialContext));
     });
 
     grid.appendChild(leftColumn);
@@ -128,8 +135,8 @@ export class ProgressScene extends BaseScene {
       this.root.addEventListener('click', this.handleContinue);
     }, 0);
 
-    this.updateDisplayedValues(context);
-    this.animateUsers();
+    this.updateDisplayedValues(initialContext);
+    this.animateUsers(initialContext, finalContext);
   }
 
   handleContinue(event) {
@@ -170,20 +177,46 @@ export class ProgressScene extends BaseScene {
       this.progressVideo.currentTime = 0;
       this.progressVideo = null;
     }
+    this.initialContext = null;
+    this.finalContext = null;
+    this.overrideCommitted = false;
   }
 
-  animateUsers() {
-    if (!this.shouldAnimateUsers()) {
+  animateUsers(initialContext, finalContext) {
+    if (finalContext) {
+      this.finalContext = finalContext;
+    }
+    if (!this.usersValueElement) {
       return;
     }
 
-    if (!this.usersValueElement || !this.game?.advanceUsers) {
+    const overrides = this.contextOverrides ?? {};
+    if (overrides?.animateUsers === false) {
+      this.updateDisplayedValues(finalContext);
+      return;
+    }
+
+    const hasOverrideTargets =
+      Object.prototype.hasOwnProperty.call(overrides, 'users') ||
+      Object.prototype.hasOwnProperty.call(overrides, 'date') ||
+      Object.prototype.hasOwnProperty.call(overrides, 'campuses');
+
+    if (hasOverrideTargets) {
+      const committedFinal = this.commitOverrideProgress(finalContext);
+      this.finalContext = committedFinal;
+      this.animateToOverrides(initialContext, committedFinal);
+      return;
+    }
+
+    if (!this.game?.advanceUsers) {
+      this.updateDisplayedValues(finalContext);
       return;
     }
 
     const { start, end, timeline } = this.game.advanceUsers();
     const finalSnapshot = this.game?.getSnapshot?.() ?? null;
-    const finalContext = this.buildContext(finalSnapshot);
+    const updatedFinalContext = this.buildContext(finalSnapshot);
+    this.finalContext = updatedFinalContext;
 
     const startDate = timeline?.previous
       ? new Date(timeline.previous.year, (timeline.previous.month ?? 1) - 1, timeline.previous.day ?? 1)
@@ -199,7 +232,7 @@ export class ProgressScene extends BaseScene {
 
     this.usersValueElement.textContent = start.toLocaleString();
     if (this.dateValueElement && timeline?.previous) {
-      const formatted = this.game?.formatTimeline?.(timeline.previous) ?? '';
+      const formatted = this.game?.formatTimeline?.(timeline.previous) ?? initialContext.date ?? '';
       this.dateValueElement.textContent = `${dateLabel}: ${formatted}`;
     }
 
@@ -224,31 +257,73 @@ export class ProgressScene extends BaseScene {
         this.animationFrame = requestAnimationFrame(step);
       } else {
         this.animationFrame = null;
-        this.updateDisplayedValues(finalContext);
+        this.updateDisplayedValues(this.finalContext ?? updatedFinalContext);
       }
     };
 
     this.animationFrame = requestAnimationFrame(step);
   }
 
-  shouldAnimateUsers() {
-    if (!this.game?.advanceUsers) {
-      return false;
-    }
+  animateToOverrides(initialContext, finalContext) {
     if (!this.usersValueElement) {
-      return false;
+      this.updateDisplayedValues(finalContext);
+      return;
     }
 
-    const overrides = this.contextOverrides ?? {};
-    if (overrides?.animateUsers === false) {
-      return false;
+    const start = initialContext?.users ?? 0;
+    const end = finalContext?.users ?? start;
+    if (start === end) {
+      this.updateDisplayedValues(finalContext);
+      return;
     }
 
-    const hasUsersOverride = Object.prototype.hasOwnProperty.call(overrides, 'users');
-    const hasDateOverride = Object.prototype.hasOwnProperty.call(overrides, 'date');
-    const hasCampusesOverride = Object.prototype.hasOwnProperty.call(overrides, 'campuses');
+    const duration = 3500;
+    const startTime = performance.now();
+    const dateLabel = this.dateLabel ?? 'Date';
+    const startTimeline = initialContext?.timeline ?? null;
+    const endTimeline = finalContext?.timeline ?? startTimeline;
+    const startDateObj = this.timelineToDate(startTimeline);
+    const endDateObj = this.timelineToDate(endTimeline);
+    const hasTimelineChange =
+      startDateObj && endDateObj && Math.abs(endDateObj.getTime() - startDateObj.getTime()) > 0;
+    const hasStringDateChange = (initialContext?.date ?? '') !== (finalContext?.date ?? '');
 
-    return !hasUsersOverride && !hasDateOverride && !hasCampusesOverride;
+    const step = (current) => {
+      const elapsed = current - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      const currentValue = Math.round(start + (end - start) * progress);
+      this.usersValueElement.textContent = currentValue.toLocaleString();
+
+      if (this.dateValueElement) {
+        if (hasTimelineChange) {
+          const interpolatedTime =
+            startDateObj.getTime() + (endDateObj.getTime() - startDateObj.getTime()) * progress;
+          const interpolatedDate = new Date(interpolatedTime);
+          const interpolatedTimeline = this.dateToTimeline(interpolatedDate);
+          let formatted = finalContext?.date ?? initialContext?.date ?? '';
+          if (interpolatedTimeline) {
+            formatted = this.game?.formatTimeline?.(interpolatedTimeline) ?? formatted;
+          }
+          this.dateValueElement.textContent = `${dateLabel}: ${formatted}`;
+        } else {
+          let dateText = initialContext?.date ?? '';
+          if (hasStringDateChange && progress >= 0.8) {
+            dateText = finalContext?.date ?? dateText;
+          }
+          this.dateValueElement.textContent = `${dateLabel}: ${dateText}`;
+        }
+      }
+
+      if (progress < 1) {
+        this.animationFrame = requestAnimationFrame(step);
+      } else {
+        this.animationFrame = null;
+        this.finalContext = finalContext;
+        this.updateDisplayedValues(finalContext);
+      }
+    };
+
+    this.animationFrame = requestAnimationFrame(step);
   }
 
   findEntry(entries, key) {
@@ -330,6 +405,7 @@ export class ProgressScene extends BaseScene {
           },
           health: snapshot.morale ?? 0,
           next: undefined,
+          timeline: snapshot.timeline ? { ...snapshot.timeline } : null,
         }
       : {
           date: '',
@@ -340,6 +416,7 @@ export class ProgressScene extends BaseScene {
           },
           health: undefined,
           next: undefined,
+          timeline: null,
         };
 
     if (overrides?.date !== undefined) {
@@ -354,11 +431,33 @@ export class ProgressScene extends BaseScene {
     if (overrides?.next !== undefined) {
       base.next = overrides.next;
     }
+    if (overrides?.nextCampus !== undefined) {
+      base.next = overrides.nextCampus;
+    }
     if (overrides?.campuses) {
       base.campuses = {
         reached: overrides.campuses.reached ?? base.campuses.reached,
         total: overrides.campuses.total ?? base.campuses.total,
       };
+    }
+    if (overrides?.timeline && typeof overrides.timeline === 'object') {
+      base.timeline = {
+        ...(base.timeline ?? {}),
+        ...overrides.timeline,
+      };
+    }
+    if (overrides?.dateTimeline && typeof overrides.dateTimeline === 'object') {
+      base.timeline = {
+        ...(base.timeline ?? {}),
+        ...overrides.dateTimeline,
+      };
+    }
+
+    if (overrides?.date === undefined && base.timeline) {
+      const formatted = this.game?.formatTimeline?.(base.timeline);
+      if (formatted) {
+        base.date = formatted;
+      }
     }
 
     return base;
@@ -409,6 +508,12 @@ export class ProgressScene extends BaseScene {
       if (source.nextCampus !== undefined) {
         overrides.next = source.nextCampus;
       }
+      if (source.timeline) {
+        overrides.timeline = { ...source.timeline };
+      }
+      if (source.dateTimeline) {
+        overrides.dateTimeline = { ...source.dateTimeline };
+      }
       if (source.animateUsers === false) {
         overrides.animateUsers = false;
       }
@@ -421,7 +526,18 @@ export class ProgressScene extends BaseScene {
     apply(progressProps);
 
     const directHasOverrides = directProps
-      ? ['date', 'users', 'health', 'next', 'nextCampus', 'campuses', 'campusesReached', 'campusesTotal'].some(
+      ? [
+          'date',
+          'users',
+          'health',
+          'next',
+          'nextCampus',
+          'campuses',
+          'campusesReached',
+          'campusesTotal',
+          'timeline',
+          'dateTimeline',
+        ].some(
           (key) => directProps[key] !== undefined
         )
       : false;
@@ -470,5 +586,77 @@ export class ProgressScene extends BaseScene {
       return `${fallback}`;
     }
     return `${value}`;
+  }
+
+  timelineToDate(timeline) {
+    if (!timeline || !timeline.year || !timeline.month) {
+      return null;
+    }
+    const day = timeline.day ?? 1;
+    return new Date(timeline.year, timeline.month - 1, day);
+  }
+
+  commitOverrideProgress(finalContext) {
+    if (!this.game?.state) {
+      return finalContext;
+    }
+
+    if (this.overrideCommitted) {
+      const snapshot = this.game?.getSnapshot?.() ?? null;
+      return this.buildContext(snapshot);
+    }
+
+    this.overrideCommitted = true;
+
+    const state = this.game.state;
+    state.progressVisits = (state.progressVisits ?? 0) + 1;
+
+    if (finalContext?.users !== undefined) {
+      state.users = finalContext.users;
+    }
+
+    const campusesReached = finalContext?.campuses?.reached;
+    if (campusesReached !== undefined) {
+      state.campusesReached = campusesReached;
+      state.currentCampusIndex = Math.min(campusesReached, this.game?.totalCampuses ?? campusesReached);
+    }
+
+    const timelineOverride =
+      finalContext?.timeline ??
+      this.contextOverrides?.dateTimeline ??
+      this.contextOverrides?.timeline ??
+      null;
+
+    if (timelineOverride) {
+      state.timeline = {
+        ...(state.timeline ?? {}),
+        ...timelineOverride,
+      };
+    }
+
+    const snapshot = this.game?.getSnapshot?.() ?? null;
+    return this.buildContext(snapshot);
+  }
+
+  dateToTimeline(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+      return null;
+    }
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
+  }
+
+  resolveVideoSource(prompts) {
+    const defaultVideo = prompts?.defaultVideo ?? 'img/backgrounds/bld.mp4';
+    if (typeof this.props?.progress === 'object' && this.props.progress?.video) {
+      return this.props.progress.video;
+    }
+    if (this.props?.video) {
+      return this.props.video;
+    }
+    return defaultVideo;
   }
 }

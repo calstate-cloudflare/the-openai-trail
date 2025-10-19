@@ -39,7 +39,45 @@ export class QuizScene extends BaseScene {
 
     const resolutionKey = `${this.sceneName}.select`;
     const nextScene = option.nextScene ?? this.resolveTransition(resolutionKey, 'progress_status');
-    this.navigate(nextScene, { source: 'quiz_intro', choice: option.id });
+
+    const navigationProps = {
+      source: this.sceneName,
+      choice: option.id,
+    };
+
+    if (this.sceneName === 'quiz_phase3') {
+      navigationProps.progress = {
+        users: 10000,
+        campuses: {
+          reached: 4,
+        },
+        health: 'Daunted',
+        nextCampus: 'Channel Islands',
+        dateTimeline: {
+          year: 2025,
+          month: 3,
+          day: 31,
+        },
+      };
+    }
+
+    if (this.sceneName === 'quiz_phase5') {
+      navigationProps.progress = {
+        users: 100000,
+        campuses: {
+          reached: 20,
+        },
+        health: 'Shell Shocked',
+        nextCampus: 'Long Beach',
+        dateTimeline: {
+          year: 2025,
+          month: 8,
+          day: 31,
+        },
+      };
+    }
+
+    this.navigate(nextScene, navigationProps);
   }
 
   destroy() {

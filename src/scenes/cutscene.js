@@ -57,7 +57,28 @@ export class CutsceneScene extends BaseScene {
     event?.preventDefault?.();
     const transitionKey = `${this.sceneName}.continue`;
     const nextScene = this.resolveTransition(transitionKey, 'travel');
-    this.navigate(nextScene, { source: this.sceneName });
+
+    const navigationProps = { source: this.sceneName };
+
+    if (this.sceneName === 'cutscene_long_beach') {
+      const totalCampuses = this.game?.totalCampuses ?? 23;
+      const currentYear = this.game?.state?.timeline?.year ?? 2025;
+      navigationProps.progress = {
+        users: 180000,
+        campuses: {
+          reached: totalCampuses,
+        },
+        health: 'Excited',
+        nextCampus: 'Educause',
+        dateTimeline: {
+          year: currentYear,
+          month: 10,
+          day: 29,
+        },
+      };
+    }
+
+    this.navigate(nextScene, navigationProps);
   }
 
   destroy() {
@@ -68,4 +89,3 @@ export class CutsceneScene extends BaseScene {
     this.hasContinued = false;
   }
 }
-

@@ -457,14 +457,15 @@ main {
 
 .cutscene__board {
   position: absolute;
-  top: 384px;
-  left: 160px;
-  width: 500px;
-  height: 22px;
+  top: 379px;
+  left: 50%;
+  width: 520px;
+  height: 24px;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: translateX(-50%);
   padding: 0;
   margin: 0;
   color: #0a0a0a;
@@ -477,14 +478,15 @@ main {
 
 .cutscene__subtitle {
   position: absolute;
-  top: 406px;
-  left: 160px;
-  width: 500px;
-  height: 22px;
+  top: 403px;
+  left: 50%;
+  width: 520px;
+  height: 24px;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: translateX(-50%);
   padding: 0;
   margin: 0;
   color: #0a0a0a;
@@ -561,32 +563,39 @@ main {
 
 .progress-scene__stats-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 40px;
+  grid-template-columns: minmax(0, 45%) minmax(0, 55%);
+  gap: 12px 18px;
   width: 100%;
 }
 
 .progress-scene__stats-column {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .progress-scene__stat-row {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 4px;
 }
 
 .progress-scene__stat-label {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  min-width: 120px;
+  min-width: 80px;
+  text-align: right;
+  white-space: nowrap;
+  padding-right: 1px;
 }
 
 .progress-scene__stat-value {
   flex: 1;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .progress-scene__prompt {
@@ -680,6 +689,10 @@ main {
 
 #frame[data-background='cutscene_long_beach'] {
   --screen-background: url('../img/backgrounds/long-beach.png');
+}
+
+#frame[data-background='cutscene_educause'] {
+  --screen-background: url('../img/backgrounds/educause.png');
 }
 
 #frame[data-background='progress_status'] {

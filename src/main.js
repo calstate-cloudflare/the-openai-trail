@@ -71,6 +71,8 @@ async function bootstrap() {
     sceneManager.register('cutscene_maritime', CutsceneScene);
     sceneManager.register('cutscene_channel_islands', CutsceneScene);
     sceneManager.register('cutscene_long_beach', CutsceneScene);
+    sceneManager.register('cutscene_educause', CutsceneScene);
+    sceneManager.register('the_end', InfoScene);
     sceneManager.register('progress_status', ProgressScene);
 
     let initialScene = flowConfig?.initialScene ?? 'main_menu';
