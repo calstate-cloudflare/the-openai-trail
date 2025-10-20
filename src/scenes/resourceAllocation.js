@@ -6,7 +6,7 @@ export class ResourceAllocationScene extends BaseScene {
     super(context);
     this.menu = null;
     this.prompts = null;
-    this.feedback = 'Hiring freeze in effect — no FTE available to add staff.';
+    this.feedback = 'Hiring freeze in effect — No added staff.';
   }
 
   mount() {
@@ -61,7 +61,7 @@ export class ResourceAllocationScene extends BaseScene {
   buildOptions() {
     const staffOptions = (this.prompts.options ?? []).map((option) => {
       const fte = option.fteRequired ?? 1;
-      const description = `Cost: ${fte} FTE — Benefit: ${option.benefit}`;
+      const description = `${fte} FTE : ${option.benefit}`;
       return {
         ...option,
         description,

@@ -202,7 +202,22 @@ main {
   max-width: 500px;
 }
 
-.screen[data-scene='resource_allocation'] .menu__button {
+.screen[data-scene='team_naming'] .team-single-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  text-align: center;
+}
+
+.screen[data-scene='team_naming'] .team-single-column__title {
+  width: 100%;
+}
+
+
+
+
+.menu__button {
   min-width: 340px;
   max-width: 500px;
   font-size: 12px;
@@ -302,55 +317,6 @@ main {
   gap: 3px;
 }
 
-.screen[data-scene='team_naming'] .team-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 12px;
-  width: 100%;
-  height: 100%;
-}
-
-.screen[data-scene='team_naming'] .team-layout__info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.screen[data-scene='team_naming'] .team-layout__form {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  justify-content: flex-start;
-}
-
-.screen[data-scene='team_naming'] .team-layout__members {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.screen[data-scene='team_naming'] .team-layout__members-row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: nowrap;
-}
-
-.screen[data-scene='team_naming'] .team-layout__members-row--pair {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 4px 12px;
-  align-items: center;
-}
-
-.screen[data-scene='team_naming'] .form {
-  margin-top: 0;
-  gap: 6px;
-  align-items: stretch;
-}
-
-.screen[data-scene='team_naming'] .form__submit--right {
-  margin-left: auto;
-}
 
 .menu__button {
   background: transparent;
@@ -435,7 +401,7 @@ main {
   padding: 4px 8px;
   font-size: 12px;
   flex: 1;
-  min-width: 0;
+  min-width: 100;
 }
 
 .screen[data-scene='team_naming'] .form__submit {
@@ -1004,4 +970,40 @@ main {
 .ascii-divider {
   font-size: 18px;
   color: var(--crt-dim);
+}
+
+.screen[data-scene='team_naming'] .team-single-column__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(320px, 100%);
+}
+
+.screen[data-scene='team_naming'] .team-single-column__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.screen[data-scene='team_naming'] .team-single-column__submit {
+  width: 100%;
+}
+
+.screen[data-scene='team_naming'] .team-single-column__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(320px, 100%);
+}
+
+.screen[data-scene='team_naming'] .team-single-column__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.screen[data-scene='team_naming'] .team-single-column__submit {
+  width: 100%;
 }

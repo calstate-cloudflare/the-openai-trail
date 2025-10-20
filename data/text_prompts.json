@@ -81,14 +81,11 @@
   },
   "team_naming": {
     "title": "Name Your Team",
-    "body": [
-      "What is the name of your rollout team?"
-    ],
+    "body": [],
     "fields": {
-      "teamNameLabel": "Rollout team name",
-      "submitLabel": "Lock in the team"
+      "teamNameLabel": "Team name",
+      "submitLabel": "Submit"
     },
-    "promptAbove": "Enter the team name and press Submit to continue.",
     "prompt": ""
   },
   "start_timing": {
@@ -132,15 +129,15 @@
     ],
     "options": [
       {
-        "id": "faculty_innovation_fellow",
-        "label": "Faculty Innovation Fellow",
-        "benefit": "Boosts morale and adoption speed.",
+        "id": "AI_Project_Manager",
+        "label": "AI Project Manager",
+        "benefit": "Keeps everyone on track.",
         "fteRequired": 1
       },
       {
-        "id": "systems_administrator",
-        "label": "Systems Administrator",
-        "benefit": "Keeps infrastructure steady and outages low.",
+        "id": "IDM_specialist",
+        "label": "IDM Specialist",
+        "benefit": "Wrangle 23 different IDM systems.",
         "fteRequired": 1
       },
       {

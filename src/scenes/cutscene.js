@@ -86,6 +86,9 @@ export class CutsceneScene extends BaseScene {
         ...(navigationProps.progress ?? {}),
         ...progressOverrides,
       };
+      if (progressOverrides.health !== undefined && typeof this.game?.setHealthLabel === 'function') {
+        this.game.setHealthLabel(progressOverrides.health);
+      }
     }
 
     this.navigate(nextScene, navigationProps);

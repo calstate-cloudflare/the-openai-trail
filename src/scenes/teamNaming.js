@@ -16,72 +16,39 @@ export class TeamNamingScene extends BaseScene {
 
     this.clear();
 
-    const layout = document.createElement('div');
-    layout.className = 'team-layout';
-    this.root.appendChild(layout);
-
-    const infoColumn = document.createElement('div');
-    infoColumn.className = 'team-layout__info';
-    layout.appendChild(infoColumn);
+    const container = document.createElement('div');
+    container.className = 'team-single-column';
+    this.root.appendChild(container);
 
     if (prompts.title) {
       const title = document.createElement('h1');
-      title.className = 'screen__title';
+      title.className = 'screen__title team-single-column__title';
       title.textContent = prompts.title;
-      infoColumn.appendChild(title);
-    }
-
-    if (Array.isArray(prompts.body)) {
-      const body = document.createElement('div');
-      body.className = 'screen__body';
-      prompts.body.forEach((line, index) => {
-        if (index > 0) body.appendChild(document.createElement('br'));
-        const span = document.createElement('span');
-        span.textContent = line;
-        body.appendChild(span);
-      });
-      infoColumn.appendChild(body);
+      container.appendChild(title);
     }
 
     this.form = document.createElement('form');
-    this.form.className = 'form';
+    this.form.className = 'team-single-column__form';
     this.form.addEventListener('submit', this.handleSubmit);
 
     const fields = prompts.fields ?? {};
     const teamLabel = fields.teamNameLabel ?? 'Team name';
 
-    this.form.appendChild(this.createField(teamLabel, 'team-name', true));
+    this.form.appendChild(this.createField(teamLabel, 'team-name', fields.submitLabel ?? 'Submit'));
 
-    const submit = document.createElement('button');
-    submit.type = 'submit';
-    submit.className = 'form__submit form__submit--right';
-    submit.textContent = fields.submitLabel ?? 'Continue';
     this.errorElement = document.createElement('div');
     this.errorElement.className = 'form__error';
     this.form.appendChild(this.errorElement);
 
-    const formColumn = document.createElement('div');
-    formColumn.className = 'team-layout__form';
-    layout.appendChild(formColumn);
-    formColumn.appendChild(this.form);
-
-    if (prompts.prompt) {
-      const prompt = document.createElement('div');
-      prompt.className = 'screen__prompt';
-      prompt.textContent = prompts.prompt ?? '';
-      infoColumn.appendChild(prompt);
-    }
-
-    this.form.appendChild(submit);
+    container.appendChild(this.form);
 
     const firstInput = this.form.querySelector('input');
     if (firstInput) firstInput.focus();
   }
 
-  createField(labelText, name, inline = false) {
+  createField(labelText, name, submitLabel) {
     const group = document.createElement('label');
-    group.className = 'form__group';
-    if (inline) group.classList.add('form__group--inline');
+    group.className = 'form__group team-single-column__group';
 
     const label = document.createElement('span');
     label.className = 'form__label';
@@ -93,8 +60,14 @@ export class TeamNamingScene extends BaseScene {
     input.name = name;
     input.className = 'form__input';
     input.autocomplete = 'off';
-    input.required = inline || name === 'team-name';
+    input.required = name === 'team-name';
     group.appendChild(input);
+
+    const submit = document.createElement('button');
+    submit.type = 'submit';
+    submit.className = 'form__submit team-single-column__submit';
+    submit.textContent = submitLabel ?? 'Submit';
+    group.appendChild(submit);
 
     return group;
   }
