@@ -82,15 +82,14 @@
   "team_naming": {
     "title": "Name Your Team",
     "body": [
-      "What is the name of your rollout team?",
-      "Name your teammates (4 total)."
+      "What is the name of your rollout team?"
     ],
     "fields": {
       "teamNameLabel": "Rollout team name",
-      "memberLabel": "Teammate",
       "submitLabel": "Lock in the team"
     },
-    "prompt": "Enter names and press Submit to continue."
+    "promptAbove": "Enter the team name and press Submit to continue.",
+    "prompt": ""
   },
   "start_timing": {
     "title": "Pick Your Rollout Date",
@@ -101,7 +100,7 @@
       {
         "id": "launch_immediately",
         "label": "Right now (January)",
-        "description": "The only choice the Chancellor’s Office will approve.",
+        "description": "The only choice the Chancellor\u2019s Office will approve.",
         "month": 1,
         "nextScene": "resource_allocation"
       },
@@ -159,7 +158,7 @@
     "prompt": "Which role would you like to secure?"
   },
   "core_loop": {
-    "title": "The OpenAI Trail — Status",
+    "title": "The OpenAI Trail \u2014 Status",
     "statusLabels": [
       "Weather",
       "Morale",
@@ -207,7 +206,7 @@
       {
         "id": "request_funding",
         "label": "Request emergency funding",
-        "description": "Beg the Chancellor’s Office for more money."
+        "description": "Beg the Chancellor\u2019s Office for more money."
       }
     ],
     "prompt": "What is your choice?"
@@ -231,7 +230,7 @@
       {
         "id": "grueling",
         "label": "Grueling",
-        "description": "Burn the midnight oil—at a steep morale cost."
+        "description": "Burn the midnight oil\u2014at a steep morale cost."
       }
     ],
     "prompt": "Select the new rollout pace."
@@ -280,7 +279,7 @@
       {
         "id": "reach_maritime",
         "label": "Reach CSU Maritime",
-        "result": "🎉 Win (successful rollout)"
+        "result": "\ud83c\udf89 Win (successful rollout)"
       },
       {
         "id": "lose_staff",
@@ -307,7 +306,7 @@
       "Campuses deployed: +50 pts each",
       "Remaining goodwill: +1 pt / 25 units",
       "Remaining budget: +1 pt / $5",
-      "Bonus multiplier based on role (×1–×3)"
+      "Bonus multiplier based on role (\u00d71\u2013\u00d73)"
     ],
     "prompt": "Press ENTER to continue."
   },
@@ -343,7 +342,10 @@
   "launch_briefing": {
     "boardText": "Launch Date 3/30/2025",
     "subtitle": "CO Office, Long Beach",
-    "prompt": "Press to Continue"
+    "prompt": "Press to Continue",
+    "progress": {
+      "health": "Optimistic"
+    }
   },
   "cutscene_golden_bear": {
     "boardText": "Golden Bear Campus",
@@ -358,7 +360,7 @@
     "subtitle": "Ventura County",
     "prompt": "Press to Continue",
     "progress": {
-      "health": "Daunted"
+      "health": "Shell Shocked"
     }
   },
   "cutscene_long_beach": {
@@ -366,7 +368,7 @@
     "subtitle": "Long Beach",
     "prompt": "Press to Continue",
     "progress": {
-      "health": "Shell Shocked"
+      "health": "Excited"
     }
   },
   "cutscene_educause": {
@@ -446,14 +448,14 @@
       {
         "id": "academic_integrity",
         "label": "AI-assisted academic misconduct",
-        "description": "Students or faculty using AI to generate content without attribution—creating new forms of plagiarism.",
+        "description": "Students or faculty using AI to generate content without attribution\u2014creating new forms of plagiarism.",
         "outcome": "Integrity oversight committee formed",
         "nextScene": "cutscene_maritime"
       },
       {
         "id": "ai_sycophancy",
         "label": "AI-induced mental fatigue and sycophancy",
-        "description": "Constant AI use can create dependency—students may seek affirmation from AI instead of feedback from peers or faculty.",
+        "description": "Constant AI use can create dependency\u2014students may seek affirmation from AI instead of feedback from peers or faculty.",
         "outcome": "Digital wellness taskforce convened",
         "nextScene": "cutscene_maritime"
       },
@@ -484,14 +486,14 @@
       {
         "id": "large_campuses",
         "label": "Engage large campuses with influence",
-        "description": "They represent the bulk of CSU’s users and visibility, but may resist alignment due to existing AI strategies and governance structures.",
+        "description": "They represent the bulk of CSU\u2019s users and visibility, but may resist alignment due to existing AI strategies and governance structures.",
         "outcome": "High-impact campuses onboard slowly, requiring sustained negotiation and trust-building.",
         "nextScene": "progress_status"
       },
       {
         "id": "coalition_willing",
         "label": "Form a Coalition of the Willing",
-        "description": "Unite campuses eager to collaborate—strength: shared enthusiasm and momentum; threat: uneven adoption and fragmented governance.",
+        "description": "Unite campuses eager to collaborate\u2014strength: shared enthusiasm and momentum; threat: uneven adoption and fragmented governance.",
         "outcome": "Coalition drives rapid innovation, though policy alignment lags across the system.",
         "nextScene": "progress_status"
       }

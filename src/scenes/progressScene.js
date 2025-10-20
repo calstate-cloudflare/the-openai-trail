@@ -403,7 +403,10 @@ export class ProgressScene extends BaseScene {
             reached: snapshot.campusesReached ?? snapshot.progressVisits ?? 0,
             total: this.game?.totalCampuses ?? 0,
           },
-          health: snapshot.morale ?? 0,
+          health:
+            snapshot.healthLabel !== undefined && snapshot.healthLabel !== null
+              ? snapshot.healthLabel
+              : undefined,
           next: undefined,
           timeline: snapshot.timeline ? { ...snapshot.timeline } : null,
         }
@@ -613,6 +616,14 @@ export class ProgressScene extends BaseScene {
 
     if (finalContext?.users !== undefined) {
       state.users = finalContext.users;
+    }
+
+    if (finalContext?.health !== undefined) {
+      if (typeof this.game?.setHealthLabel === 'function') {
+        this.game.setHealthLabel(finalContext.health);
+      } else {
+        state.healthLabel = finalContext.health;
+      }
     }
 
     const campusesReached = finalContext?.campuses?.reached;

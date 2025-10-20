@@ -345,6 +345,11 @@ main {
 .screen[data-scene='team_naming'] .form {
   margin-top: 0;
   gap: 6px;
+  align-items: stretch;
+}
+
+.screen[data-scene='team_naming'] .form__submit--right {
+  margin-left: auto;
 }
 
 .menu__button {

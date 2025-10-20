@@ -52,36 +52,10 @@ export class TeamNamingScene extends BaseScene {
 
     this.form.appendChild(this.createField(teamLabel, 'team-name', true));
 
-    const membersWrapper = document.createElement('div');
-    membersWrapper.className = 'team-layout__members';
-
-    const memberLabel = fields.memberLabel ?? 'Teammate';
-    const memberRows = [
-      [0],
-      [1],
-      [2, 3],
-    ];
-
-    memberRows.forEach((indices) => {
-      const row = document.createElement('div');
-      row.className = 'team-layout__members-row';
-      if (indices.length > 1) {
-        row.classList.add('team-layout__members-row--pair');
-      }
-      indices.forEach((index) => {
-        row.appendChild(this.createField(`${memberLabel} ${index + 1}`, `member-${index}`, true));
-      });
-      membersWrapper.appendChild(row);
-    });
-
-    this.form.appendChild(membersWrapper);
-
     const submit = document.createElement('button');
     submit.type = 'submit';
-    submit.className = 'form__submit';
+    submit.className = 'form__submit form__submit--right';
     submit.textContent = fields.submitLabel ?? 'Continue';
-    this.form.appendChild(submit);
-
     this.errorElement = document.createElement('div');
     this.errorElement.className = 'form__error';
     this.form.appendChild(this.errorElement);
@@ -97,6 +71,8 @@ export class TeamNamingScene extends BaseScene {
       prompt.textContent = prompts.prompt ?? '';
       infoColumn.appendChild(prompt);
     }
+
+    this.form.appendChild(submit);
 
     const firstInput = this.form.querySelector('input');
     if (firstInput) firstInput.focus();
@@ -129,23 +105,13 @@ export class TeamNamingScene extends BaseScene {
     const formData = new FormData(this.form);
     const teamName = (formData.get('team-name') || '').toString().trim();
 
-    const teammates = [];
-    for (let i = 0; i < 4; i++) {
-      const value = (formData.get(`member-${i}`) || '').toString().trim();
-      if (!value) {
-        this.showError('Please provide all four teammate names.');
-        return;
-      }
-      teammates.push(value);
-    }
-
     if (!teamName) {
       this.showError('Please provide a rollout team name.');
       return;
     }
 
     this.game.updateTeamName(teamName);
-   this.game.updateTeammates(teammates);
+    this.game.updateTeammates([]);
     const nextScene = this.resolveTransition('team_naming.submit', 'start_timing');
     this.navigate(nextScene, { source: 'team_naming' });
   }

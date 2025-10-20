@@ -26,6 +26,7 @@ export class GameLogic {
       budget: DEFAULT_STARTING_BUDGET,
       goodwill: 100,
       morale: 70,
+      healthLabel: 'Optimistic',
       engagement: 'filling',
       pace: 'steady',
       campusesReached: 0,
@@ -182,7 +183,7 @@ export class GameLogic {
   adjustMorale(amount) {
     const maxMorale = 100;
     this.state.morale = Math.min(maxMorale, Math.max(0, this.state.morale + amount));
-    this.emit('morale:changed', { morale: this.state.morale });
+    this.emit('morale:changed', { morale: this.state.morale, healthLabel: this.state.healthLabel });
   }
 
   setEngagement(level) {
@@ -384,5 +385,14 @@ export class GameLogic {
       this.state.quizAnswers.push(entry);
     }
     this.telemetry?.recordQuizAnswer?.(questionId, choiceId, metadata);
+  }
+
+  setHealthLabel(label) {
+    this.state.healthLabel = label ?? null;
+    this.emit('morale:changed', { morale: this.state.morale, healthLabel: this.state.healthLabel });
+  }
+
+  getHealthLabel() {
+    return this.state.healthLabel ?? null;
   }
 }
