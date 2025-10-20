@@ -348,26 +348,38 @@
   "cutscene_golden_bear": {
     "boardText": "Golden Bear Campus",
     "subtitle": "San Francisco Bay",
-    "prompt": "Press to Continue"
+    "prompt": "Press to Continue",
+    "progress": {
+      "health": "Steady"
+    }
   },
   "cutscene_channel_islands": {
     "boardText": "Channel Islands Campus",
     "subtitle": "Ventura County",
-    "prompt": "Press to Continue"
+    "prompt": "Press to Continue",
+    "progress": {
+      "health": "Daunted"
+    }
   },
   "cutscene_long_beach": {
     "boardText": "Long Beach Campus",
     "subtitle": "Long Beach",
-    "prompt": "Press to Continue"
+    "prompt": "Press to Continue",
+    "progress": {
+      "health": "Shell Shocked"
+    }
   },
   "cutscene_educause": {
     "boardText": "EDUCAUSE Conference",
     "subtitle": "Nashville, TN",
-    "prompt": "Press to Continue"
+    "prompt": "Press to Continue",
+    "progress": {
+      "health": "Excited"
+    }
   },
   "progress_status": {
     "prompt": "Press ENTER to continue the rollout",
-    "defaultVideo": "img/backgrounds/bld.mp4",
+    "defaultVideo": "img/backgrounds/csu-campus.mp4",
     "stats": [
       {
         "label": "Date",
@@ -579,13 +591,16 @@
   "cutscene_maritime": {
     "boardText": "Cal Maritime Pilot",
     "subtitle": "Golden-Bear Ship",
-    "prompt": "Press to Continue"
+    "prompt": "Press to Continue",
+    "progress": {
+      "health": "Optimistic"
+    }
   },
   "the_end": {
-    "title": "THE END",
+    "title": "THE END OF THE TRAIL",
     "body": [
-      "Your EDUCAUSE showcase cements the CSU rollout as a national model.",
-      "Press ENTER to return to the main menu and relive the trail."
+      "We are here at EDUCAUSE and excited to dialog with you all about our journey!",
+      "Press ENTER to return to the main menu"
     ],
     "prompt": "Press ENTER"
   }

@@ -650,7 +650,7 @@ export class ProgressScene extends BaseScene {
   }
 
   resolveVideoSource(prompts) {
-    const defaultVideo = prompts?.defaultVideo ?? 'img/backgrounds/bld.mp4';
+    const defaultVideo = prompts?.defaultVideo ?? 'img/backgrounds/csu-campus.mp4';
     if (typeof this.props?.progress === 'object' && this.props.progress?.video) {
       return this.props.progress.video;
     }

@@ -12,6 +12,7 @@ export class CutsceneScene extends BaseScene {
 
   mount() {
     const prompts = this.getPrompt(this.sceneName) ?? {};
+    this.prompts = prompts;
 
     this.clear();
     this.root.classList.add('cutscene');
@@ -48,6 +49,7 @@ export class CutsceneScene extends BaseScene {
   }
 
   handleContinue(event) {
+    const prompts = this.prompts ?? this.getPrompt(this.sceneName) ?? {};
     if (!this.ready) return;
     if (event?.type === 'keydown' && !CONTINUE_KEYS.has(event.key)) {
       return;
@@ -68,7 +70,6 @@ export class CutsceneScene extends BaseScene {
         campuses: {
           reached: totalCampuses,
         },
-        health: 'Excited',
         nextCampus: 'Educause',
         dateTimeline: {
           year: currentYear,
@@ -76,6 +77,14 @@ export class CutsceneScene extends BaseScene {
           day: 29,
         },
         video: 'img/backgrounds/music-city-center.mp4',
+      };
+    }
+
+    const progressOverrides = prompts?.progress;
+    if (progressOverrides && typeof progressOverrides === 'object') {
+      navigationProps.progress = {
+        ...(navigationProps.progress ?? {}),
+        ...progressOverrides,
       };
     }
 

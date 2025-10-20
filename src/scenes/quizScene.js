@@ -57,7 +57,6 @@ export class QuizScene extends BaseScene {
         campuses: {
           reached: 4,
         },
-        health: 'Daunted',
         nextCampus: 'Channel Islands',
         dateTimeline: {
           year: 2025,
@@ -73,7 +72,6 @@ export class QuizScene extends BaseScene {
         campuses: {
           reached: 20,
         },
-        health: 'Shell Shocked',
         nextCampus: 'Long Beach',
         dateTimeline: {
           year: 2025,
