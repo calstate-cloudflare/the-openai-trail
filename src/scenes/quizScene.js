@@ -30,6 +30,12 @@ export class QuizScene extends BaseScene {
   handleSelect(option) {
     if (!option) return;
 
+    this.game.recordQuizAnswer(this.sceneName, option.id, {
+      label: option.label ?? '',
+      description: option.description ?? '',
+      outcome: option.outcome ?? '',
+    });
+
     if (option.outcome) {
       this.game.addLogEntry({
         type: 'info',

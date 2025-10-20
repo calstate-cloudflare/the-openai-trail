@@ -7,16 +7,18 @@ const USERS_INCREMENT = 1000;
 const PROGRESS_TIMELINE_INCREMENT_DAYS = 31;
 
 export class GameLogic {
-  constructor({ textPrompts, eventsConfig }) {
+  constructor({ textPrompts, eventsConfig, telemetry }) {
     this.textPrompts = textPrompts;
     this.eventsConfig = eventsConfig;
     this.listeners = new Map();
     this.totalCampuses = TOTAL_CAMPUSES;
+    this.telemetry = telemetry ?? null;
 
     this.resetCampaign();
   }
 
   resetCampaign() {
+    this.telemetry?.resetSession?.();
     this.state = {
       role: null,
       teamName: '',
@@ -37,6 +39,7 @@ export class GameLogic {
       travelLog: [],
       users: 0,
       progressVisits: 0,
+      quizAnswers: [],
     };
 
     this.emit('state:reset', this.state);
@@ -148,6 +151,7 @@ export class GameLogic {
       description: role.description ?? '',
       multiplier: DEFAULT_ROLE_MULTIPLIER,
     };
+    this.telemetry?.setRole?.(this.state.role);
     this.state.budget = DEFAULT_STARTING_BUDGET;
     this.emit('role:selected', { role, state: this.state });
     return role;
@@ -155,11 +159,13 @@ export class GameLogic {
 
   updateTeamName(name) {
     this.state.teamName = name;
+    this.telemetry?.setTeamName?.(name);
     this.emit('team:updated', { teamName: name });
   }
 
   updateTeammates(names) {
     this.state.teammates = names;
+    this.telemetry?.setTeamMembers?.(names);
     this.emit('team:updated', { teammates: names });
   }
 
@@ -360,5 +366,23 @@ export class GameLogic {
       time: 'The academic year ends before you complete the rollout.',
     };
     return messages[reason] ?? 'The rollout has been halted.';
+  }
+
+  recordQuizAnswer(questionId, choiceId, metadata = {}) {
+    const entry = {
+      questionId,
+      choiceId,
+      ...metadata,
+    };
+    if (!Array.isArray(this.state.quizAnswers)) {
+      this.state.quizAnswers = [];
+    }
+    const index = this.state.quizAnswers.findIndex((answer) => answer.questionId === questionId);
+    if (index >= 0) {
+      this.state.quizAnswers.splice(index, 1, entry);
+    } else {
+      this.state.quizAnswers.push(entry);
+    }
+    this.telemetry?.recordQuizAnswer?.(questionId, choiceId, metadata);
   }
 }

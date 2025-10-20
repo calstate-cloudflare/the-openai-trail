@@ -16,6 +16,8 @@ import { CutsceneScene } from './scenes/cutscene.js';
 import { ProgressScene } from './scenes/progressScene.js';
 import { QuizScene } from './scenes/quizScene.js';
 import { initScaler } from './ui/scaler.js';
+import { TelemetryClient } from './game/telemetry.js';
+import { loadEnvironmentConfig } from './config/environment.js';
 
 async function loadJSON(path) {
   const response = await fetch(path, { cache: 'no-store' });
@@ -38,13 +40,19 @@ async function bootstrap() {
   initScaler(frame);
 
   try {
-    const [textPrompts, eventsConfig, flowConfig] = await Promise.all([
+    const [envConfig, textPrompts, eventsConfig, flowConfig] = await Promise.all([
+      loadEnvironmentConfig(),
       loadJSON('data/text_prompts.json'),
       loadJSON('data/events.json'),
       loadJSON('data/flow.json'),
     ]);
 
-    const game = new GameLogic({ textPrompts, eventsConfig });
+    const telemetry = new TelemetryClient();
+    if (envConfig?.PUBLIC_TELEMETRY_ENDPOINT) {
+      telemetry.setEndpoint(envConfig.PUBLIC_TELEMETRY_ENDPOINT);
+    }
+
+    const game = new GameLogic({ textPrompts, eventsConfig, telemetry });
     const sceneManager = new SceneManager({ root, frame, game, textPrompts, flowConfig });
 
     sceneManager.register('main_menu', MainMenuScene);

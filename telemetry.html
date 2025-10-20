@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Telemetry Dashboard • The OpenAI Trail</title>
+    <link rel="stylesheet" href="style/retro.css?v=20251015e" />
+    <link rel="stylesheet" href="style/dashboard.css?v=20251015e" />
+  </head>
+  <body class="dashboard">
+    <main class="dashboard__main">
+      <header class="dashboard__header">
+        <div>
+          <h1>Telemetry Dashboard</h1>
+          <p>View recent OpenAI Trail survey submissions.</p>
+        </div>
+        <div class="dashboard__header-actions">
+          <button id="refresh-button" type="button">Refresh</button>
+        </div>
+      </header>
+
+      <section class="dashboard__panel">
+        <div class="dashboard__controls">
+          <label class="dashboard__control">
+            <span>Records per page</span>
+            <select id="limit-select">
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+            </select>
+          </label>
+          <span id="endpoint-label" class="dashboard__endpoint"></span>
+        </div>
+      </section>
+
+      <section class="dashboard__summary" id="summary"></section>
+
+      <section class="dashboard__table-panel">
+        <div id="status" class="dashboard__status" role="status" aria-live="polite"></div>
+        <div class="dashboard__table-wrapper">
+          <table class="dashboard__table" aria-describedby="status">
+            <thead>
+              <tr>
+                <th scope="col">Session</th>
+                <th scope="col">Collected</th>
+                <th scope="col">Role</th>
+                <th scope="col">Team</th>
+                <th scope="col">Members</th>
+                <th scope="col">Quiz Answers</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="dashboard__footer">
+        <button id="load-more" type="button" disabled>Load More</button>
+        <span id="pagination-info" class="dashboard__pagination-info"></span>
+      </section>
+    </main>
+
+    <script type="module" src="src/telemetryDashboard.js?v=20251015e"></script>
+  </body>
+</html>

@@ -1,0 +1,232 @@
+.dashboard {
+  margin: 0;
+  min-height: 100vh;
+  background: #010503;
+  color: #f4f8f8;
+  font-family: 'CodeGon Mono', 'CodeGon', monospace;
+  letter-spacing: 0.03em;
+  padding: 32px min(5vw, 48px);
+  box-sizing: border-box;
+}
+
+.dashboard__main {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid rgba(143, 238, 150, 0.2);
+  padding-bottom: 12px;
+}
+
+.dashboard__header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #8fee96;
+}
+
+.dashboard__header p {
+  margin: 4px 0 0;
+  color: rgba(244, 248, 248, 0.7);
+}
+
+.dashboard__header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.dashboard__header-actions button,
+.dashboard__footer button {
+  padding: 8px 16px;
+  border: 1px solid #8fee96;
+  background: rgba(0, 20, 12, 0.6);
+  color: #f4f8f8;
+  font: inherit;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard__header-actions button:hover,
+.dashboard__header-actions button:focus-visible,
+.dashboard__footer button:hover,
+.dashboard__footer button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 14px rgba(143, 238, 150, 0.4);
+  transform: translateY(-1px);
+}
+
+.dashboard__header-actions button:disabled,
+.dashboard__footer button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.dashboard__panel {
+  background: rgba(0, 12, 6, 0.8);
+  border: 1px solid rgba(143, 238, 150, 0.3);
+  padding: 16px;
+}
+
+.dashboard__controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.dashboard__control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: rgba(244, 248, 248, 0.9);
+}
+
+.dashboard__control select {
+  background: rgba(0, 20, 12, 0.6);
+  border: 1px solid rgba(143, 238, 150, 0.4);
+  color: #f4f8f8;
+  padding: 6px 10px;
+  font: inherit;
+}
+
+.dashboard__endpoint {
+  font-size: 12px;
+  color: rgba(244, 248, 248, 0.55);
+  word-break: break-all;
+}
+
+.dashboard__summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.dashboard__summary-card {
+  background: rgba(0, 12, 6, 0.8);
+  border: 1px solid rgba(249, 201, 123, 0.35);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dashboard__summary-card dt {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: rgba(249, 201, 123, 0.9);
+  margin: 0;
+}
+
+.dashboard__summary-card dd {
+  margin: 0;
+  font-size: 22px;
+  color: #f4f8f8;
+}
+
+.dashboard__summary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard__summary-list li {
+  font-size: 13px;
+  color: rgba(244, 248, 248, 0.75);
+  text-transform: uppercase;
+}
+
+.dashboard__table-panel {
+  background: rgba(0, 12, 6, 0.8);
+  border: 1px solid rgba(143, 238, 150, 0.3);
+  padding: 12px;
+}
+
+.dashboard__status {
+  min-height: 20px;
+  font-size: 14px;
+  color: rgba(249, 201, 123, 0.85);
+  margin-bottom: 12px;
+}
+
+.dashboard__table-wrapper {
+  overflow-x: auto;
+}
+
+.dashboard__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.dashboard__table thead {
+  background: rgba(143, 238, 150, 0.12);
+}
+
+.dashboard__table th,
+.dashboard__table td {
+  border: 1px solid rgba(143, 238, 150, 0.2);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.dashboard__table th {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(143, 238, 150, 0.9);
+}
+
+.dashboard__table td {
+  color: rgba(244, 248, 248, 0.85);
+}
+
+.dashboard__table td ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.dashboard__table td ul li {
+  margin-bottom: 4px;
+}
+
+.dashboard__footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dashboard__pagination-info {
+  font-size: 12px;
+  color: rgba(244, 248, 248, 0.6);
+}
+
+@media (max-width: 720px) {
+  .dashboard {
+    padding: 24px 16px;
+  }
+
+  .dashboard__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard__header-actions {
+    align-self: stretch;
+  }
+}
