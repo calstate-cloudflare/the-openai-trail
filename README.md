@@ -27,6 +27,8 @@ Feel free to use any other static server (e.g., `npx serve`, `http-server`, or a
 
 Copy `.env.example` to `.env` and update `PUBLIC_TELEMETRY_ENDPOINT` (and any other values) for your deployment. The file is served to the browser, so only include keys intended for public use.
 
+For hosts that do not serve dotfiles (e.g., Netlify), edit `config/runtime-env.json`; the app loads this JSON first and falls back to `.env` / `.env.public`.
+
 ### Telemetry Dashboard
 
 Open `telemetry.html` after configuring the endpoint to browse captured role/team/quiz submissions. The page uses the same `.env` values and supports pagination via the API’s `cursor` parameter.

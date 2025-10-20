@@ -1,5 +1,7 @@
 # OpenAI Trail Telemetry API – Integration Notes
 
+Configure the client endpoint in `config/runtime-env.json` (recommended) or, if your host serves dotfiles, via `PUBLIC_TELEMETRY_ENDPOINT` in `.env` / `.env.public`. The dashboard and game read whichever file is available.
+
 ## Endpoint
 - `POST https://openai-trail-telemetry.mattjhughes.workers.dev/openai-trail/submissions`
 - Required header: `Content-Type: application/json`

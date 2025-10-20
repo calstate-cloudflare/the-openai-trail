@@ -9,7 +9,7 @@
 - `POST https://openai-trail-telemetry.mattjhughes.workers.dev/openai-trail/submissions`
 - HTTPS required.
 - Accepts `application/json` only.
-- Front-end reads the endpoint from `PUBLIC_TELEMETRY_ENDPOINT` defined in `.env` (or `.env.public`) served alongside the site; omit secrets.
+- Front-end reads the endpoint from `config/runtime-env.json` (preferred) or from `PUBLIC_TELEMETRY_ENDPOINT` defined in `.env` / `.env.public` if the JSON file is missing. Ensure whichever file you use is published with the site and contains only public-safe values.
 
 ## Authentication
 - Initial implementation may allow unauthenticated requests.

@@ -1,0 +1,4 @@
+{
+  "PUBLIC_TELEMETRY_ENDPOINT": "https://openai-trail-telemetry.mattjhughes.workers.dev/openai-trail/submissions",
+  "PUBLIC_TELEMETRY_FETCH_ENDPOINT": "https://openai-trail-telemetry.mattjhughes.workers.dev/openai-trail/submissions"
+}

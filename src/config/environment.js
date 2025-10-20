@@ -1,8 +1,20 @@
-const ENV_PATHS = ['.env', '.env.public'];
+const ENV_PATHS = ['config/runtime-env.json', '.env', '.env.public'];
 let envPromise = null;
 
-function parseEnv(text) {
+function parseEnv(text, format = 'env') {
   if (!text) return {};
+  if (format === 'json') {
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed && typeof parsed === 'object') {
+        return parsed;
+      }
+    } catch (error) {
+      console.warn('[Env] Failed to parse JSON environment file', error);
+    }
+    return {};
+  }
+
   return text
     .split('\n')
     .map((line) => line.trim())
@@ -30,7 +42,8 @@ async function fetchEnv() {
         continue;
       }
       const text = await response.text();
-      return parseEnv(text);
+      const format = path.endsWith('.json') ? 'json' : 'env';
+      return parseEnv(text, format);
     } catch (error) {
       console.warn(`[Env] Failed to fetch ${path}`, error);
     }
