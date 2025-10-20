@@ -75,6 +75,7 @@ export class CutsceneScene extends BaseScene {
           month: 10,
           day: 29,
         },
+        video: 'img/backgrounds/music-city-center.mp4',
       };
     }
 
