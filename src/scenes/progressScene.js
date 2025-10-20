@@ -28,6 +28,7 @@ export class ProgressScene extends BaseScene {
     this.root.classList.add('progress-scene');
 
     this.contextOverrides = this.extractOverrides();
+    this.applyImmediateLabelOverrides();
 
     const wrapper = document.createElement('div');
     wrapper.className = 'progress-scene__wrapper';
@@ -390,7 +391,8 @@ export class ProgressScene extends BaseScene {
     }
     if (this.nextValueElement) {
       const fallback = this.nextValueElement.dataset?.fallback ?? '';
-      this.nextValueElement.textContent = this.formatNext(context.next, fallback);
+      const storedNext = context.next !== undefined ? context.next : this.game?.getNextLabel?.();
+      this.nextValueElement.textContent = this.formatNext(storedNext, fallback);
     }
   }
 
@@ -407,7 +409,10 @@ export class ProgressScene extends BaseScene {
             snapshot.healthLabel !== undefined && snapshot.healthLabel !== null
               ? snapshot.healthLabel
               : undefined,
-          next: undefined,
+          next:
+            snapshot.nextLabel !== undefined && snapshot.nextLabel !== null
+              ? snapshot.nextLabel
+              : undefined,
           timeline: snapshot.timeline ? { ...snapshot.timeline } : null,
         }
       : {
@@ -483,7 +488,8 @@ export class ProgressScene extends BaseScene {
         return this.formatHealth(context.health, entry.value ?? '');
       case 'next':
       case 'nextcampus':
-        return this.formatNext(context.next, entry.value ?? '');
+        const storedNext = context.next !== undefined ? context.next : this.game?.getNextLabel?.();
+        return this.formatNext(storedNext, entry.value ?? '');
       default:
         return entry.value ?? '';
     }
@@ -550,6 +556,22 @@ export class ProgressScene extends BaseScene {
     }
 
     return overrides;
+  }
+
+  applyImmediateLabelOverrides() {
+    const overrides = this.contextOverrides ?? {};
+    if (overrides.health !== undefined) {
+      this.game?.setHealthLabel?.(overrides.health);
+    }
+    const nextOverride =
+      overrides.next !== undefined
+        ? overrides.next
+        : overrides.nextCampus !== undefined
+          ? overrides.nextCampus
+          : undefined;
+    if (nextOverride !== undefined) {
+      this.game?.setNextLabel?.(nextOverride);
+    }
   }
 
   normalizeCampusOverrides(source) {
@@ -623,6 +645,14 @@ export class ProgressScene extends BaseScene {
         this.game.setHealthLabel(finalContext.health);
       } else {
         state.healthLabel = finalContext.health;
+      }
+    }
+
+    if (finalContext?.next !== undefined) {
+      if (typeof this.game?.setNextLabel === 'function') {
+        this.game.setNextLabel(finalContext.next);
+      } else {
+        state.nextLabel = finalContext.next;
       }
     }
 

@@ -27,6 +27,7 @@ export class GameLogic {
       goodwill: 100,
       morale: 70,
       healthLabel: 'Optimistic',
+      nextLabel: null,
       engagement: 'filling',
       pace: 'steady',
       campusesReached: 0,
@@ -394,5 +395,14 @@ export class GameLogic {
 
   getHealthLabel() {
     return this.state.healthLabel ?? null;
+  }
+
+  setNextLabel(label) {
+    this.state.nextLabel = label ?? null;
+    this.emit('next:changed', { next: this.state.nextLabel });
+  }
+
+  getNextLabel() {
+    return this.state.nextLabel ?? null;
   }
 }
