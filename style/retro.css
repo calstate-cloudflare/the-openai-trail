@@ -825,31 +825,6 @@ main {
   }
 }
 
-@media (max-width: 720px) {
-  .screen[data-scene='about_csu'] .about-csu {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .screen[data-scene='about_csu'] .about-csu__logo-stack {
-    width: 100%;
-  }
-
-  .screen[data-scene='about_csu'] .about-csu__logo {
-    align-items: flex-start;
-  }
-
-  .about-csu__logo-mark {
-    width: 96px;
-    height: 96px;
-    font-size: 28px;
-  }
-
-  .about-csu__scroll-clip {
-    max-height: 200px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .about-csu__scroll-body {
     animation: none;
