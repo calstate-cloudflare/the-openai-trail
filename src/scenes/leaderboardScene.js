@@ -1,6 +1,6 @@
 import { BaseScene } from './baseScene.js';
 
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 6;
 
 export class LeaderboardScene extends BaseScene {
   constructor(context) {
@@ -112,10 +112,10 @@ export class LeaderboardScene extends BaseScene {
             ? rawScore
             : Number.parseInt(String(rawScore).replace(/[^0-9.-]/g, ''), 10) || 0;
         return {
-          name: item.teamName || item.team || item.name || 'Unknown Team',
-          role: item.role?.label || item.role?.id || 'Unknown Role',
-          score: numericScore,
-        };
+        name: this.truncateName(item.teamName || item.team || item.name || 'Unknown Team'),
+        role: item.role?.label || item.role?.id || 'Unknown Role',
+        score: numericScore,
+      };
       })
       .filter((entry) => entry)
       .sort((a, b) => (b.score || 0) - (a.score || 0));
@@ -156,6 +156,12 @@ export class LeaderboardScene extends BaseScene {
     this.state = { loading: false, error: message, entries: [] };
     this.table.innerHTML = '';
     this.setStatus(message);
+  }
+
+  truncateName(name) {
+    if (!name) return 'Unknown Team';
+    const trimmed = name.trim();
+    return trimmed.length > 10 ? `${trimmed.slice(0, 9)}…` : trimmed;
   }
 
   handleKeydown(event) {
