@@ -105,11 +105,18 @@ export class LeaderboardScene extends BaseScene {
     if (!payload) return [];
     const items = Array.isArray(payload.items) ? payload.items : Array.isArray(payload) ? payload : [];
     return items
-      .map((item) => ({
-        name: item.teamName || item.team || item.name || 'Unknown Team',
-        role: item.role?.label || item.role?.id || 'Unknown Role',
-        score: typeof item.score === 'number' ? item.score : item.totalScore || item.points || 0,
-      }))
+      .map((item) => {
+        const rawScore = item.score ?? item.totalScore ?? item.points ?? 0;
+        const numericScore =
+          typeof rawScore === 'number'
+            ? rawScore
+            : Number.parseInt(String(rawScore).replace(/[^0-9.-]/g, ''), 10) || 0;
+        return {
+          name: item.teamName || item.team || item.name || 'Unknown Team',
+          role: item.role?.label || item.role?.id || 'Unknown Role',
+          score: numericScore,
+        };
+      })
       .filter((entry) => entry)
       .sort((a, b) => (b.score || 0) - (a.score || 0));
   }
