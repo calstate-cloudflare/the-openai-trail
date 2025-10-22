@@ -10,6 +10,7 @@ import { ChangePaceScene } from './scenes/changePace.js';
 import { ChangeEngagementScene } from './scenes/changeEngagement.js';
 import { VictoryScene, GameOverScene } from './scenes/endScenes.js';
 import { InfoScene } from './scenes/infoScene.js';
+import { LeaderboardScene } from './scenes/leaderboardScene.js';
 import { AboutCsuScene } from './scenes/aboutCsu.js';
 import { LaunchBriefingScene } from './scenes/launchBriefing.js';
 import { CutsceneScene } from './scenes/cutscene.js';
@@ -53,7 +54,7 @@ async function bootstrap() {
     }
 
     const game = new GameLogic({ textPrompts, eventsConfig, telemetry });
-    const sceneManager = new SceneManager({ root, frame, game, textPrompts, flowConfig });
+    const sceneManager = new SceneManager({ root, frame, game, textPrompts, flowConfig, envConfig });
 
     sceneManager.register('main_menu', MainMenuScene);
     sceneManager.register('role_selection', RoleSelectionScene);
@@ -67,7 +68,7 @@ async function bootstrap() {
     sceneManager.register('victory', VictoryScene);
     sceneManager.register('game_over', GameOverScene);
     sceneManager.register('scoring', InfoScene);
-    sceneManager.register('leaderboard', InfoScene);
+    sceneManager.register('leaderboard', LeaderboardScene);
     sceneManager.register('launch_briefing', LaunchBriefingScene);
     sceneManager.register('quiz_intro', QuizScene);
     sceneManager.register('quiz_phase2', QuizScene);

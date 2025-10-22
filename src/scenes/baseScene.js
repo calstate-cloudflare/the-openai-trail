@@ -7,6 +7,7 @@ export class BaseScene {
     this.sceneName = sceneName;
     this.props = props;
     this.flowConfig = manager?.context?.flowConfig ?? {};
+    this.envConfig = manager?.context?.envConfig ?? {};
   }
 
   getPrompt(key) {

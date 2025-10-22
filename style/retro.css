@@ -42,16 +42,25 @@ body {
   font-family: 'CodeGon Mono', 'CodeGon', monospace;
   letter-spacing: 0.04em;
   min-height: 100vh;
+  overflow: hidden;
+}
+
+#viewport {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 #frame {
   position: relative;
-  width: min(95vw, calc(95vh * 2454 / 1440));
-  aspect-ratio: 2454 / 1440;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  --screen-scale: 1;
+  width: 818px;
+  height: 480px;
+  flex: 0 0 auto;
+  transform-origin: center center;
+  transform: scale(var(--frame-scale, 1));
 }
 
 .skip-link {
@@ -78,17 +87,13 @@ body {
 }
 
 main {
-  width: 818px;
-  height: 480px;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 8, 4, 0.95);
   border: 6px solid var(--crt-border);
   box-shadow: 0 0 25px rgba(8, 255, 120, 0.25), inset 0 0 8px rgba(8, 255, 120, 0.35);
   padding: 28px 40px;
-  position: absolute;
-  top: var(--screen-offset-y, 0px);
-  left: var(--screen-offset-x, 0px);
-  transform-origin: top left;
-  transform: scale(var(--screen-scale));
+  position: relative;
   overflow: hidden;
   background-size: cover;
   background-position: center;
@@ -97,12 +102,10 @@ main {
 
 .crt-overlay {
   position: absolute;
-  width: 818px;
-  height: 480px;
-  top: var(--screen-offset-y, 0px);
-  left: var(--screen-offset-x, 0px);
-  transform-origin: top left;
-  transform: scale(var(--screen-scale));
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   pointer-events: none;
   background-image: repeating-linear-gradient(
       to bottom,
@@ -177,6 +180,71 @@ main {
 .screen[data-scene='progress_status'] {
   padding: 0;
   gap: 0;
+}
+
+.screen.leaderboard {
+  padding: 12px 32px 24px;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.leaderboard__status {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--crt-amber);
+  min-height: 16px;
+  text-transform: uppercase;
+}
+
+.leaderboard__table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid rgba(143, 238, 150, 0.25);
+  padding: 8px 16px 10px;
+  background: rgba(0, 12, 6, 0.6);
+  max-height: 210px;
+  overflow: hidden;
+}
+
+.leaderboard__row {
+  display: grid;
+  grid-template-columns: 48px 1fr 1fr 120px;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(143, 238, 150, 0.15);
+}
+
+.leaderboard__row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard__row--header {
+  font-size: 12px;
+  color: var(--crt-amber);
+  letter-spacing: 0.08em;
+}
+
+.leaderboard__row--header .leaderboard__rank,
+.leaderboard__row--header .leaderboard__score {
+  text-align: right;
+}
+
+.leaderboard__rank,
+.leaderboard__score {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.leaderboard__name {
+  color: var(--crt-white);
+}
+
+.leaderboard__role {
+  color: rgba(244, 248, 248, 0.75);
 }
 
 .screen[data-scene='resource_allocation'] .screen__title {
@@ -822,31 +890,6 @@ main {
   }
 }
 
-@media (max-width: 720px) {
-  .screen[data-scene='about_csu'] .about-csu {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .screen[data-scene='about_csu'] .about-csu__logo-stack {
-    width: 100%;
-  }
-
-  .screen[data-scene='about_csu'] .about-csu__logo {
-    align-items: flex-start;
-  }
-
-  .about-csu__logo-mark {
-    width: 96px;
-    height: 96px;
-    font-size: 28px;
-  }
-
-  .about-csu__scroll-clip {
-    max-height: 200px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .about-csu__scroll-body {
     animation: none;
@@ -970,24 +1013,6 @@ main {
 .ascii-divider {
   font-size: 18px;
   color: var(--crt-dim);
-}
-
-.screen[data-scene='team_naming'] .team-single-column__form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: min(320px, 100%);
-}
-
-.screen[data-scene='team_naming'] .team-single-column__group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: stretch;
-}
-
-.screen[data-scene='team_naming'] .team-single-column__submit {
-  width: 100%;
 }
 
 .screen[data-scene='team_naming'] .team-single-column__form {
