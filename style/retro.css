@@ -182,6 +182,70 @@ main {
   gap: 0;
 }
 
+.screen.leaderboard {
+  padding: 40px 32px;
+  gap: 18px;
+}
+
+.leaderboard__status {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--crt-amber);
+  min-height: 16px;
+  text-transform: uppercase;
+}
+
+.leaderboard__table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid rgba(143, 238, 150, 0.25);
+  padding: 12px 16px;
+  background: rgba(0, 12, 6, 0.6);
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.leaderboard__row {
+  display: grid;
+  grid-template-columns: 48px 1fr 1fr 120px;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(143, 238, 150, 0.15);
+}
+
+.leaderboard__row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard__row--header {
+  font-size: 12px;
+  color: var(--crt-amber);
+  letter-spacing: 0.08em;
+}
+
+.leaderboard__row--header .leaderboard__rank,
+.leaderboard__row--header .leaderboard__score {
+  text-align: right;
+}
+
+.leaderboard__rank,
+.leaderboard__score {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.leaderboard__name {
+  color: var(--crt-white);
+}
+
+.leaderboard__role {
+  color: rgba(244, 248, 248, 0.75);
+}
+
 .screen[data-scene='resource_allocation'] .screen__title {
   font-size: 20px;
 }
