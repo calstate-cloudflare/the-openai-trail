@@ -711,27 +711,27 @@ main {
 }
 
 #frame[data-background='launch_briefing'] {
-  --screen-background: url('../img/backgrounds/chancellors-office.png');
+  --screen-background: url('../img/backgrounds/chancellors-office.jpg');
 }
 
 #frame[data-background='cutscene_golden_bear'] {
-  --screen-background: url('../img/backgrounds/golden-bear.png');
+  --screen-background: url('../img/backgrounds/golden-bear.jpg');
 }
 
 #frame[data-background='cutscene_maritime'] {
-  --screen-background: url('../img/backgrounds/golden-bear.png');
+  --screen-background: url('../img/backgrounds/golden-bear.jpg');
 }
 
 #frame[data-background='cutscene_channel_islands'] {
-  --screen-background: url('../img/backgrounds/channel-islands.png');
+  --screen-background: url('../img/backgrounds/channel-islands.jpg');
 }
 
 #frame[data-background='cutscene_long_beach'] {
-  --screen-background: url('../img/backgrounds/long-beach.png');
+  --screen-background: url('../img/backgrounds/long-beach.jpg');
 }
 
 #frame[data-background='cutscene_educause'] {
-  --screen-background: url('../img/backgrounds/educause.png');
+  --screen-background: url('../img/backgrounds/educause.jpg');
 }
 
 #frame[data-background='progress_status'] {
