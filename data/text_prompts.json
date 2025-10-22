@@ -498,94 +498,101 @@
     "prompt": "Choose how to expand the rollout beyond Cal Maritime"
   },
   "quiz_phase4": {
-    "title": "Operational Pulse",
+    "title": "A Crowded Field for AI",
     "body": [
-      "The rollout heartbeat stays strong. Where do you focus to keep it steady?"
+      "The AI landscape is rapidly evolving, with several major players competing for attention and market share. Which do you see as the strongest competitor to OpenAI in the coming years?"
     ],
     "options": [
       {
-        "id": "campus_roadshow",
-        "label": "Launch a campus roadshow",
-        "description": "Bring the team to regional hubs.",
-        "outcome": "Roadshow slate announced",
+        "id": "Claude",
+        "label": "Anthropic’s Claude",
+        "description": "Focused on safety, alignment, and explainability — Claude appeals to institutions prioritizing responsible AI use.",
+        "outcome": "Claude gains traction in education and research circles.",
         "nextScene": "cutscene_channel_islands"
       },
       {
-        "id": "faculty_advocates",
-        "label": "Recruit faculty advocates",
-        "description": "Empower early adopters to teach peers.",
-        "outcome": "Faculty advocate cohort formed",
+        "id": "Gemini",
+        "label": "Google’s Gemini",
+        "description": "Deeply integrated with Google Workspace, Gemini’s strength lies in its ecosystem and reach across productivity tools.",
+        "outcome": "Gemini adoption grows within enterprise ecosystems.",
         "nextScene": "cutscene_channel_islands"
       },
       {
-        "id": "analytics_push",
-        "label": "Publish usage analytics",
-        "description": "Share wins to keep leadership energized.",
-        "outcome": "Usage analytics shared",
+        "id": "Microsoft",
+        "label": "Microsoft Copilot & Azure AI",
+        "description": "Rather than building its own models, Microsoft leverages OpenAI technology within Copilot and Azure AI, pairing scale with enterprise integration.",
+        "outcome": "Microsoft expands its lead through deep ecosystem integration and enterprise trust.",
         "nextScene": "cutscene_channel_islands"
       }
     ],
-    "prompt": "Select the next initiative"
+    "prompt": "Select the strongest AI competitor"
   },
   "quiz_phase5": {
-    "title": "Channel Islands Check-in",
+    "title": "The Ripple Effects of AI",
     "body": [
-      "CSU Channel Islands is gearing up. What do they need from you now?"
+      "AI adoption is reshaping higher education in multiple ways — from classrooms to back offices to data dashboards. Where do you expect the biggest impact to be felt first?"
     ],
     "options": [
       {
-        "id": "student_forum",
-        "label": "Host a student forum",
-        "description": "Hear priorities directly from learners.",
-        "outcome": "Student voices incorporated",
+        "id": "teaching_learning",
+        "label": "Teaching & Learning",
+        "description": "AI tutors, writing assistants, and adaptive learning tools transform how students engage and how faculty design instruction.",
+        "outcome": "Faculty begin rethinking assignments, feedback, and academic integrity in the age of AI.",
         "nextScene": "progress_status"
       },
       {
-        "id": "research_pilot",
-        "label": "Stand up a research pilot",
-        "description": "Showcase AI in academic projects.",
-        "outcome": "Research pilot underway",
+        "id": "org_efficiency",
+        "label": "Organizational Efficiency",
+        "description": "Automation and AI copilots streamline workflows — from IT tickets to HR requests — saving time and improving service quality.",
+        "outcome": "Operational tasks accelerate as AI copilots reduce administrative bottlenecks.",
         "nextScene": "progress_status"
       },
       {
-        "id": "support_desk",
-        "label": "Expand support desk",
-        "description": "Scale frontline help as adoption spikes.",
-        "outcome": "Support coverage extended",
+        "id": "data_analytics",
+        "label": "Data & Analytics",
+        "description": "AI-powered analytics surface insights from enrollment data, student outcomes, and resource allocation to guide smarter decisions.",
+        "outcome": "Data-driven decision-making becomes faster, more predictive, and more equitable.",
         "nextScene": "progress_status"
       }
     ],
-    "prompt": "How do you support Channel Islands?"
+    "prompt": "Select the area of biggest impact"
   },
   "quiz_phase6": {
-    "title": "Final Stretch",
+    "title": "Outlook on AI",
     "body": [
-      "Before you brief Long Beach, choose the push that seals the rollout story."
+      "AI is reshaping nearly every aspect of life — work, creativity, relationships, and learning. How would you describe your overall outlook on this transformation?"
     ],
     "options": [
       {
-        "id": "leadership_summit",
-        "label": "Host a leadership summit",
-        "description": "Share systemwide impact with executives.",
-        "outcome": "Leadership summit confirmed",
+        "id": "excited",
+        "label": "Excited and Optimistic",
+        "description": "You see AI as a powerful force for progress and innovation.",
+        "outcome": "You lean into the possibilities and look for ways to apply them.",
         "nextScene": "cutscene_long_beach"
       },
       {
-        "id": "communications_blast",
-        "label": "Launch the final comms blast",
-        "description": "Celebrate wins across all campuses.",
-        "outcome": "Celebration plan drafted",
+        "id": "cautious_excited",
+        "label": "Excited but Cautious",
+        "description": "You’re hopeful about AI’s benefits but mindful of its risks and unknowns.",
+        "outcome": "You explore with curiosity while advocating responsible use.",
         "nextScene": "cutscene_long_beach"
       },
       {
-        "id": "support_toolkit",
-        "label": "Ship the final toolkit",
-        "description": "Ensure every campus has rollout resources.",
-        "outcome": "Toolkit distributed",
+        "id": "skeptical",
+        "label": "Skeptical",
+        "description": "Unsure the hype will live up to the promise.",
+        "outcome": "You observe from a distance, waiting to see real-world value.",
+        "nextScene": "cutscene_long_beach"
+      },
+      {
+        "id": "bleak",
+        "label": "Pessimistic or Bleak",
+        "description": "You worry AI could harm jobs, creativity, or human connection.",
+        "outcome": "You brace for disruption and focus on preserving human touch.",
         "nextScene": "cutscene_long_beach"
       }
     ],
-    "prompt": "Lock in your final push"
+    "prompt": "Which best matches your outlook"
   },
   "cutscene_maritime": {
     "boardText": "Cal Maritime Pilot",
