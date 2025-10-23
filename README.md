@@ -50,3 +50,12 @@ Netlify can host the project as a static site:
 4. Deploy. Netlify will serve `index.html` along with all assets.
 
 Alternatively, any static hosting service that can serve the repository root will work (GitHub Pages, Cloudflare Pages, etc.).
+
+## Deploying to Cloudflare
+
+Cloudflare can deploy the site as a Compute Worker
+
+1. Modify wrangler.jsonc to change worker deployment name, route, and zone
+2. Create a new application, select Import a Repository, Connect Cloudflare to GitHub repository
+3. Give a Project Name and click Create and deploy
+4. Deployment should be automatic, but if any errors will output a log with suggestions, use OpenAI ChatGPT to help diagnose the log 🤖
