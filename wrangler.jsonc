@@ -1,0 +1,17 @@
+{
+  "name": "the-openai-trail",
+  "compatibility_date": "2025-10-23",
+
+  // Static site directory (your HTML/CSS/JS files)
+  "assets": {
+    "directory": "./"
+  },
+
+  // Bind this Worker to your zone and route
+  "routes": [
+    {
+      "pattern": "the-openai-trail.calstate.ai/*",
+      "zone_name": "calstate.ai"
+    }
+  ]
+}
